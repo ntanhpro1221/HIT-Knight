@@ -21,15 +21,16 @@ public abstract class IController
             _controlListener[controlType] += callback;
         }
     }
-
+        
     public void RemoveControlTarget(ControlType controlType, UnityAction callback)
     {
         if (!_controlListener.ContainsKey(controlType))
         {
             Debug.Log("Not containing control listener");
             return;
-        }
-
+    }
+    public void RemoveControlTarget(ControlType controlType, UnityAction callback) {
+        
         if ( _controlListener[controlType] != null)
         {
             _controlListener[controlType] -= callback;
@@ -39,9 +40,9 @@ public abstract class IController
         {
             _controlListener.Remove(controlType);
             Debug.Log("Removing control Type");
-        }
     }
-
+    }
+        
     protected void PostControlCommand(ControlType controlType)
     {
         if (!_controlListener.ContainsKey(controlType))
