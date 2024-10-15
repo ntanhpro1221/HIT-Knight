@@ -5,6 +5,15 @@
 /contentModel.xml
 /projectSettingsUpdater.xml
 /modules.xml
+=======
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/projectSettingsUpdater.xml
+/modules.xml
+/contentModel.xml
+>>>>>>> 403fd9b (HealthHandler)
 /.idea.HIT-Knight.iml
 # Editor-based HTTP Client requests
 /httpRequests/
