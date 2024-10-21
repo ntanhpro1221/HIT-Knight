@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 
-public class HealthHandler : CoreComponent, IHealthHandlable {
+/// <summary>
+/// Manage current health of actor.
+/// </summary>
+public class HealthHandler : CoreComponent, IHealthHandler {
     public bool IsDead => throw new System.NotImplementedException();
 
     public void Heal(float amount) {

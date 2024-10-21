@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 
 [Serializable]
-public class RuneStaticData {
+public class RuneStaticData<T> where T : Enum {
     public string id;
     public string name;
-    public List<Buff> listBuff;
+    public List<Buff<T>> listBuff;
     public int cost;
 }

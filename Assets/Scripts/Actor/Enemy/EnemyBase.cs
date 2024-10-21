@@ -1,1 +1,1 @@
-﻿public class EnemyBase : ActorBase { }
+﻿public class EnemyBase : IActor { }

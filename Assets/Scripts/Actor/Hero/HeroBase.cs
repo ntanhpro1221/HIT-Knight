@@ -1,1 +1,1 @@
-﻿public class HeroBase : ActorBase { }
+﻿public class HeroBase : IActor { }
