@@ -4,19 +4,19 @@
 /// Base of weapon object
 /// </summary>
 public abstract class IWeapon : MonoBehaviour {
-    protected Core core;
+    protected Core m_Core;
     /// <summary>
     /// manage state
     /// </summary>
-    public IStateMachine stateMachine;
+    public IWeaponSM StateMachine { get; set; }
     /// <summary>
     /// manage stat
     /// </summary>
-    public WeaponStatsHandler statsHandler;
+    public WeaponStatsHandler StatsHandler { get; set; }
     /// <summary>
     /// manage body
     /// </summary>
-    public WeaponBodyHandler bodyHandler;
+    public WeaponBodyHandler BodyHandler { get; set; }
     /// <summary>
     /// Perform close range attack
     /// </summary>

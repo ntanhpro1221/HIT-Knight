@@ -4,33 +4,33 @@
 /// Base of actor
 /// </summary>
 public abstract class IActor : MonoBehaviour {
-    protected Core core;
+    protected Core m_Core;
     /// <summary>
     /// Use weapon
     /// </summary>
-    public IWeaponHandler weaponHandler;
+    public IWeaponHandler WeaponHandler { get; set; }
     /// <summary>
     /// Manage health
     /// </summary>
-    public IHealthHandler healthHandler;
+    public IHealthHandler HealthHandler { get; set; }
     /// <summary>
     /// Manage movement
     /// </summary>
-    public IMoveHandler movementHandler;
+    public IMoveHandler MovementHandler { get; set; }
     /// <summary>
     /// Stalk object to attack
     /// </summary>
-    public IStalker stalker;
+    public IStalker Stalker { get; set; }
     /// <summary>
     /// Manage state
     /// </summary>
-    public IStateMachine stateMachine;
+    public IActorSM StateMachine { get; set; }
     /// <summary>
     /// Manage stats
     /// </summary>
-    public ActorStatsHandler statsHandler;
+    public ActorStatsHandler StatsHandler { get; set; }
     /// <summary>
     /// Manage body
     /// </summary>
-    public ActorBodyHandler bodyHandler;
+    public ActorBodyHandler BodyHandler { get; set; }
 }

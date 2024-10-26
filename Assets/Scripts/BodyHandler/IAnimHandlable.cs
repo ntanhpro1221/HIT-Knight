@@ -5,9 +5,10 @@
 /// </summary>
 /// <typeparam name="T">Enum that describes all type of event that will be called by animation.</typeparam>
 public interface IAnimHandlable<T> where T : Enum {
-    public void AddAnimEvent(T type, Action callback);
+    public void RegisterAnimEvent(T type, Action callback);
+    public void RemoveAnimEvent(T type, Action callback);
     /// <summary>
     /// Attach to animation event to call this event.
     /// </summary>
-    public void InvokeAnimEvent(T type);
+    public void PostAnimEvent(T type);
 }

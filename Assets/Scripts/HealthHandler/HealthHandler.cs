@@ -6,6 +6,8 @@
 public class HealthHandler : CoreComponent, IHealthHandler {
     public bool IsDead => throw new System.NotImplementedException();
 
+    public BindableProperty<float> CurHealth => throw new System.NotImplementedException();
+
     public void Heal(float amount) {
         throw new System.NotImplementedException();
     }
