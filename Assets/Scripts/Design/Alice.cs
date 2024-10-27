@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum KeyNum {
-    One,
-    Two,
-    Three
-}
-
-[Serializable]
-public class Bob {
-    public string a;
-    public string b;
-}
-
 public class Alice : MonoBehaviour {
-    public PropertySet<KeyNum, Bob> dict;
+    Rigidbody2D rb;
+    public float speed = 5;
     private void Start() {
-
+        rb = GetComponent<Rigidbody2D>();
+    }
+    private void FixedUpdate() {
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+            rb.velocity = Vector2.left * speed;
+            print(rb.velocity);
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow)) {
+            rb.velocity = Vector2.right * speed;
+            print(rb.velocity);
+        }
     }
 }

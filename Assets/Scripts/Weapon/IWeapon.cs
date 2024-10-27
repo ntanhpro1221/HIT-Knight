@@ -21,5 +21,9 @@ public abstract class IWeapon : MonoBehaviour {
     /// Perform close range attack
     /// </summary>
     public abstract void MeleAttack();
+    /// <summary>
+    /// Stop all attack.
+    /// </summary>
+    public abstract void StopAttack();
 }
 

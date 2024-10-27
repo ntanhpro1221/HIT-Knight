@@ -10,10 +10,6 @@ public abstract class IStalker : CoreComponent {
     /// </summary>
     public BindableProperty<GameObject> TopTarget => throw new System.NotImplementedException();
     /// <summary>
-    /// ReCalculate who is top target.
-    /// </summary>
-    public void ReCalcTopTarget() => throw new System.NotImplementedException();
-    /// <summary>
     /// Get GameObject that need to stalk from its collider.
     /// </summary>
     /// Implement by children
