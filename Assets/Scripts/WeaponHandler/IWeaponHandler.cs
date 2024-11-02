@@ -2,7 +2,8 @@
 /// <summary>
 /// Handle weapon to attack.
 /// </summary>
-public interface IWeaponHandler {
+public interface IWeaponHandler 
+{
     /// <summary>
     /// Current equipted weapon.
     /// </summary>
