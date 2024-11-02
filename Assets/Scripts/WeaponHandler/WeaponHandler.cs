@@ -7,6 +7,8 @@ using UnityEngine;
 /// </summary>
 public class WeaponHandler : CoreComponent, IWeaponHandler
 {
+    private IStalker iStalker;
+    
     private int curWeaponIndex;
     
     /// <summary>
@@ -65,8 +67,32 @@ public class WeaponHandler : CoreComponent, IWeaponHandler
     /// <summary>
     /// Perform normal attack
     /// </summary>
-    public void Attack() {
-        throw new System.NotImplementedException();
+    public void Attack()
+    {
+        if (CurWeapon == null)
+        {
+            CurWeapon.MeleAttack();
+            return;
+        }
+        
+        if (CurWeapon is IRangedWeapon rangedWeapon)
+        {
+            GameObject enemy = iStalker.TopTarget.Value;
+            float distance = Vector3.Distance(enemy.transform.position, CurWeapon.transform.position);
+            
+            if (distance > 10f)
+            {
+                rangedWeapon.RangedAttack();
+            }
+            else
+            {
+                CurWeapon.MeleAttack();
+            }
+        }
+        else if (CurWeapon is IWeapon)
+        {
+            CurWeapon.MeleAttack();
+        }
     }
     
     /// <summary>
