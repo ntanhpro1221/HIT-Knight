@@ -7,6 +7,7 @@ public interface IMoveHandler {
     /// <summary>
     /// Current velocity
     /// </summary>
+    
     Vector2 Velocity { get; }
     /// <summary>
     /// Move actor with the given direction
