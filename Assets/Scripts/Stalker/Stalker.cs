@@ -1,27 +1,35 @@
-﻿using UnityEngine;
 
-/// <summary>
-/// Manage all target need to stalk
-/// </summary>
+using System.Collections.Generic;
+using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
-public abstract class IStalker : CoreComponent {
+public class Stalker : IStalker
+{
+    [SerializeField] protected List<GameObject> stalkerList;
+    public override GameObject ToTargetType(Collider2D coll)
+    {
+        return coll.transform.parent.parent.gameObject;
+    }
+
+    public override bool ValidateTarget(GameObject target)
+    {
+        return target != null;
+    }
     /// <summary>
-    /// Most attention target (determine by CompareTarget function).
+    /// add object in range
     /// </summary>
-    public BindableProperty<GameObject> TopTarget => throw new System.NotImplementedException();
+    /// <param name="other"></param>
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        GameObject target = ToTargetType(other);
+        if (ValidateTarget(target)) stalkerList.Add(target);
+    }
     /// <summary>
-    /// Get GameObject that need to stalk from its collider.
+    /// remove object if it is not in collider range
     /// </summary>
-    /// Implement by children
-    public abstract GameObject ToTargetType(Collider2D coll);
-    /// <summary>
-    /// Check if this target need to stalk.
-    /// </summary>
-    /// Implement by children
-    public abstract bool ValidateTarget(GameObject target);
-    /// <summary>
-    /// Compare the priority of two target.
-    /// </summary>
-    /// Implement by children
-    public virtual int CompareTarget(GameObject a, GameObject b) => 0;
+    /// <param name="other"></param>
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        GameObject target = ToTargetType(other);
+        if (ValidateTarget(target)) stalkerList.Remove(target);
+    }
 }
