@@ -71,7 +71,7 @@ public class WeaponHandler : CoreComponent, IWeaponHandler
     {
         if (CurWeapon == null)
         {
-            CurWeapon.MeleAttack();
+            Debug.Log("You don't have any weapon, run for your life!");
             return;
         }
         
