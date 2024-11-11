@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 /// <summary>
 /// Handle body of object.
 /// </summary>
 /// <typeparam name="T">Enum that describes all type of event that will be called by animation</typeparam>
 [RequireComponent(typeof(Animator))]
-public abstract class IBodyHandler<T> : Component, IAnimUsable, IAnimHandlable<T> where T : Enum
+public abstract class IBodyHandler<T> : CoreComponent, IAnimUsable, IAnimHandlable<T> where T : Enum
 {
     private Animator animator;
     private Dictionary<T, Action> AnimEvents = new Dictionary<T, Action>();
@@ -80,15 +82,18 @@ public abstract class IBodyHandler<T> : Component, IAnimUsable, IAnimHandlable<T
             Debug.LogWarning("Animator not found on this GameObject.");
             return;
         }
-        float currentLength = animator.GetCurrentAnimatorStateInfo(0).length;
-        if (currentLength > 0)
-        {
-            float speed = currentLength / length;
-            animator.SetFloat(anim.speedVar, speed);
-        }
-        else
-        {
-            Debug.LogWarning("Current animation length is 0 or invalid.");
-        }
+          AnimationClip[] allAnimationClip = animator.runtimeAnimatorController.animationClips;
+          var animClip = allAnimationClip.FirstOrDefault(clip => clip.name.Contains(anim.name));
+          if (animClip != null)
+          {
+              float currSpeed = animClip.length;
+              float speed = currSpeed / length;
+              Debug.Log(currSpeed);
+              animator.SetFloat(anim.speedVar, speed);
+          }
+          else
+          {
+              Debug.LogWarning($"Animation with name containing '{anim.name}' not found in Animator.");
+          }
     }
 }
