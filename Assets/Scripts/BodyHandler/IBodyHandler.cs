@@ -12,27 +12,30 @@ public abstract class IBodyHandler<T> : CoreComponent, IAnimUsable, IAnimHandlab
 {
     private Animator animator;
     private Dictionary<T, Action> AnimEvents = new Dictionary<T, Action>();
-    protected virtual void Awake() {
-        animator = GetComponent<Animator>(); 
+    protected virtual void Awake()
+    {
+        animator = GetComponent<Animator>();
     }
 
     protected virtual void Reset()
     {
-        if(animator!=null) return;
-        animator = GetComponent<Animator>(); 
+        if (animator != null) return;
+        animator = GetComponent<Animator>();
     }
-    public void RegisterAnimEvent(T type, Action callback) {
+    public void RegisterAnimEvent(T type, Action callback)
+    {
         if (AnimEvents.ContainsKey(type))
         {
             AnimEvents[type] += callback;
         }
         else
         {
-            AnimEvents.Add(type,null);
+            AnimEvents.Add(type, null);
             AnimEvents[type] += callback;
         }
     }
-    public void RemoveAnimEvent(T type, Action callback) {
+    public void RemoveAnimEvent(T type, Action callback)
+    {
         if (!AnimEvents.ContainsKey(type))
         {
             Debug.Log("Not Found Type: " + type.GetType().Name);
@@ -40,7 +43,8 @@ public abstract class IBodyHandler<T> : CoreComponent, IAnimUsable, IAnimHandlab
         }
         AnimEvents[type] -= callback;
     }
-    public void PostAnimEvent(T type) {
+    public void PostAnimEvent(T type)
+    {
         if (!AnimEvents.ContainsKey(type))
         {
             Debug.Log("Event has no Listener");
@@ -58,15 +62,19 @@ public abstract class IBodyHandler<T> : CoreComponent, IAnimUsable, IAnimHandlab
             AnimEvents.Remove(type);
         }
     }
-    public void PlayAnim(AnimInfo anim) {
-        if (anim != null) {
-            animator.Play(anim.name); 
+    public void PlayAnim(AnimInfo anim)
+    {
+        if (anim != null)
+        {
+            animator.Play(anim.name);
             animator.SetFloat(anim.speedVar, 1f);
         }
     }
-    public void PlayAnim(AnimInfo anim, float normalizedTime) {
-        if (anim != null) {
-            animator.Play(anim.name, 0, normalizedTime); 
+    public void PlayAnim(AnimInfo anim, float normalizedTime)
+    {
+        if (anim != null)
+        {
+            animator.Play(anim.name, 0, normalizedTime);
         }
     }
     public void SetAnimLength(AnimInfo anim, float length)
@@ -82,18 +90,18 @@ public abstract class IBodyHandler<T> : CoreComponent, IAnimUsable, IAnimHandlab
             Debug.LogWarning("Animator not found on this GameObject.");
             return;
         }
-          AnimationClip[] allAnimationClip = animator.runtimeAnimatorController.animationClips;
-          var animClip = allAnimationClip.FirstOrDefault(clip => clip.name.Contains(anim.name));
-          if (animClip != null)
-          {
-              float currSpeed = animClip.length;
-              float speed = currSpeed / length;
-              Debug.Log(currSpeed);
-              animator.SetFloat(anim.speedVar, speed);
-          }
-          else
-          {
-              Debug.LogWarning($"Animation with name containing '{anim.name}' not found in Animator.");
-          }
+        AnimationClip[] allAnimationClip = animator.runtimeAnimatorController.animationClips;
+        var animClip = allAnimationClip.FirstOrDefault(clip => clip.name.Equals(anim.name));
+        if (animClip != null)
+        {
+            float currSpeed = animClip.length;
+            float speed = currSpeed / length;
+            Debug.Log(currSpeed);
+            animator.SetFloat(anim.speedVar, speed);
+        }
+        else
+        {
+            Debug.LogWarning($"Animation with name containing '{anim.name}' not found in Animator.");
+        }
     }
 }
