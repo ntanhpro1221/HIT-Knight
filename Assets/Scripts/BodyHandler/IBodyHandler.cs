@@ -51,7 +51,6 @@ public abstract class IBodyHandler<T> : CoreComponent, IAnimUsable, IAnimHandlab
     public void PlayAnim(AnimInfo anim) {
         if (anim != null) {
             animator.Play(anim.name);
-            animator.SetFloat(anim.speedVar, 1f);
         }
     }
     public void PlayAnim(AnimInfo anim, float normalizedTime) {
@@ -75,7 +74,7 @@ public abstract class IBodyHandler<T> : CoreComponent, IAnimUsable, IAnimHandlab
             float currSpeed = animClip.length;
             float speed = currSpeed / length;
             Debug.Log(currSpeed);
-            animator.SetFloat(anim.speedVar, speed);
+            animator.SetFloat(anim.SpeedVar, speed);
         } else {
             Debug.LogWarning($"Animation with name containing '{anim.name}' not found in Animator.");
         }
