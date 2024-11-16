@@ -7,11 +7,29 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public abstract class IStalker : CoreComponent
 {
-    
+    [SerializeField] protected List<GameObject> stalkerList;
+    private BindableProperty<GameObject> topTarget;
+
     /// <summary>
     /// Most attention target (determine by CompareTarget function).
     /// </summary>
-    public BindableProperty<GameObject> TopTarget => throw new System.NotImplementedException();
+    public BindableProperty<GameObject> TopTarget
+    {
+        get
+        {
+            stalkerList.Sort(CompareTarget);
+            foreach (var taget in stalkerList)
+            {
+                if (ValidateTarget(taget))
+                {
+                    topTarget.Value = taget;
+                    return topTarget;
+                }
+            }
+            return null;
+        }
+    }
+
     /// <summary>
     /// Get GameObject that need to stalk from its collider.
     /// </summary>
@@ -28,5 +46,22 @@ public abstract class IStalker : CoreComponent
     /// Implement by children
     public virtual int CompareTarget(GameObject a, GameObject b) => 0;
     
-    
+    /// <summary>
+    /// add object in range
+    /// </summary>
+    /// <param name="other"></param>
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        GameObject target = ToTargetType(other);
+        if (ValidateTarget(target)) stalkerList.Add(target);
+    }
+    /// <summary>
+    /// remove object if it is not in collider range
+    /// </summary>
+    /// <param name="other"></param>
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        GameObject target = ToTargetType(other);
+        if (ValidateTarget(target)) stalkerList.Remove(target);
+    }
 }
