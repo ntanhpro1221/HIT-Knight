@@ -22,26 +22,21 @@ public abstract class IController
         }
     }
 
-    public void RemoveControlTarget(ControlType controlType, UnityAction callback)
-    {
-        if (!_controlListener.ContainsKey(controlType))
-        {
+    public void RemoveControlTarget(ControlType controlType, UnityAction callback) {
+        if (!_controlListener.ContainsKey(controlType)) {
             Debug.Log("Not containing control listener");
             return;
         }
 
-        if ( _controlListener[controlType] != null)
-        {
+        if (_controlListener[controlType] != null) {
             _controlListener[controlType] -= callback;
             Debug.Log("Removing control listener");
-        }
-        else if (_controlListener[controlType] == null)
-        {
+        } else if (_controlListener[controlType] == null) {
             _controlListener.Remove(controlType);
             Debug.Log("Removing control Type");
         }
     }
-
+        
     protected void PostControlCommand(ControlType controlType)
     {
         if (!_controlListener.ContainsKey(controlType))

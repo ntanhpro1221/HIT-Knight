@@ -9,9 +9,12 @@ public class AnimInfo {
     /// <summary>
     /// Name of animation.
     /// </summary>
-    public string name;
+    public readonly string name;
     /// <summary>
     /// Name of variable that controls the play speed of animation.
     /// </summary>
-    public string speedVar;
+    public string SpeedVar => name + "_Speed";
+    public AnimInfo(string name) {
+        this.name = name;
+    }
 }
