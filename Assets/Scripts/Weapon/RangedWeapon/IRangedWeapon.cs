@@ -5,6 +5,13 @@
 /// </summary>
 public abstract class IRangedWeapon : IWeapon {
     /// <summary>
+    /// manage body
+    /// </summary>
+    public new RangedWeaponBodyHandler BodyHandler { 
+        get => base.BodyHandler as RangedWeaponBodyHandler; 
+        set => base.BodyHandler = value;
+    }
+    /// <summary>
     /// Bullet that will be used when perform long range attack.
     /// </summary>
     [SerializeField] protected GameObject m_BulletObj;
