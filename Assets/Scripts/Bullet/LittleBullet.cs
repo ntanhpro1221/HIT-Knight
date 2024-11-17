@@ -1,4 +1,5 @@
-﻿using Unity.VisualScripting;
+﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LittleBullet : IBullet {
@@ -14,7 +15,6 @@ public class LittleBullet : IBullet {
         {
             healthEnemy = other.GetComponentInChildren<HealthHandler>();
         }
-
         if (!healthEnemy)
         {
             Debug.LogWarning($"{other.name} does not have a HealthHandler");

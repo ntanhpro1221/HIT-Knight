@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// Bullet object.
 /// </summary>
 [RequireComponent(typeof(Collider2D))]
-public abstract class IBullet : BulletBodyHandler {
+public abstract class IBullet : MonoBehaviour {
     protected Core m_Core;
     protected IRangedWeapon _weapon;
     /// <summary>
@@ -22,7 +23,8 @@ public abstract class IBullet : BulletBodyHandler {
             Debug.LogWarning("Weapon is NULL");
             return;
         }
-        root.Translate(dir*Time.deltaTime*weapon.StatsHandler.CurStats[WeaponStatType.BulletSpeed].Value);
+        root.Translate(dir*Time.deltaTime*weapon.
+            StatsHandler.CurStats[WeaponStatType.BulletSpeed].Value);
         _weapon = weapon;
     }
 }
