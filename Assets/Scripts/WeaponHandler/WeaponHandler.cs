@@ -86,12 +86,12 @@ public class WeaponHandler : CoreComponent, IWeaponHandler
             }
             else
             {
-                CurWeapon.MeleAttack();
+                CurWeapon.MeleeAttack();
             }
         }
         else if (CurWeapon is IWeapon)
         {
-            CurWeapon.MeleAttack();
+            CurWeapon.MeleeAttack();
         }
     }
     
