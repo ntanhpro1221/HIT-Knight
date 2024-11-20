@@ -20,7 +20,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 0}
+  m_Motion: {fileID: 7400000, guid: ecee0c8c243ed1d40b4752d41d595254, type: 2}
   m_Tag: 
   m_SpeedParameter: Idle_Speed
   m_MirrorParameter: 
@@ -46,7 +46,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 0}
+  m_Motion: {fileID: 7400000, guid: 89777ec061849ed46a84cee4ac9cecdb, type: 2}
   m_Tag: 
   m_SpeedParameter: RangedAttack
   m_MirrorParameter: 
@@ -149,7 +149,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: b5124fe3d4f8dd046b70fc470a9114f7, type: 2}
+  m_Motion: {fileID: 7400000, guid: ec38b1dd68a4efb4894ff4c6fd096092, type: 2}
   m_Tag: 
   m_SpeedParameter: Aim_Speed
   m_MirrorParameter: 
@@ -175,7 +175,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 01e40156ca55c624db971fb9f450e4ee, type: 2}
+  m_Motion: {fileID: 7400000, guid: 51f97b6f45e2f6e4bb9c0827d1f729a0, type: 2}
   m_Tag: 
   m_SpeedParameter: MeleeAttack
   m_MirrorParameter: 
