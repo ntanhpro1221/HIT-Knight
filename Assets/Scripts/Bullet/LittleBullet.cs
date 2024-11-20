@@ -10,16 +10,8 @@ public class LittleBullet : IBullet {
             return;
         }
         HealthHandler healthEnemy;
-        healthEnemy = other.GetComponent<HealthHandler>();
-        if (!healthEnemy)
-        {
-            healthEnemy = other.GetComponentInChildren<HealthHandler>();
-        }
-        if (!healthEnemy)
-        {
-            Debug.LogWarning($"{other.name} does not have a HealthHandler");
-            return;
-        }
+        healthEnemy = m_Core.GetCoreComponent<HealthHandler>();
         healthEnemy.CurHealth.Value -= _weapon.StatsHandler.CurStats[WeaponStatType.Atk].Value;
+        Destroy(gameObject);
     }
 }
