@@ -4,6 +4,7 @@
 /// Manage actor movement through rigidbody
 /// </summary>
 public interface IMoveHandler {
+    void Init(Rigidbody2D rb, BindableProperty<float> moveSpeed);
     /// <summary>
     /// Current velocity
     /// </summary>
