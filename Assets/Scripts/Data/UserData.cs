@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// Local data of user
 /// </summary>
 [Serializable]
-public class UserData {
+
+public class UserData : ScriptableObject{
     public string id;
     public string name;
     public int gold;
@@ -13,4 +15,5 @@ public class UserData {
     public Dictionary<string, WeaponDynamicData> weaponData;
     public List<RuneDynamicData> actorRuneData;
     public List<RuneDynamicData> weaponRuneData;
+
 }
