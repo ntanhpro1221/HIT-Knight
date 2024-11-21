@@ -5,7 +5,7 @@ using UnityEngine.Events;
 /// <summary>
 /// Allow object to register to be called when have corresponding control request
 /// </summary>
-public abstract class IController
+public abstract class IController:MonoBehaviour
 {
     private Dictionary<ControlType, UnityAction> _controlListener = new Dictionary<ControlType, UnityAction>();
 
