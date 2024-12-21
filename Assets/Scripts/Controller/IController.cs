@@ -7,13 +7,13 @@ using UnityEngine.Events;
 /// </summary>
 public abstract class IController:MonoBehaviour
 {
-    private Dictionary<ControlType, UnityAction> _controlListener = new Dictionary<ControlType, UnityAction>();
+    private Dictionary<ControlType, UnityAction<object>> _controlListener = new Dictionary<ControlType, UnityAction<object>>();
 
-    public void RegisterControlTarget(ControlType controlType, UnityAction callback)
+    public void RegisterControlTarget(ControlType controlType, UnityAction<object> callback)
     {
         if (!_controlListener.ContainsKey(controlType))
         {
-            _controlListener[controlType] = new UnityAction(callback);
+            _controlListener[controlType] = new UnityAction<object>(callback);
             Debug.Log("Registering control listener");
         }
         else if (_controlListener[controlType] != null)
@@ -22,7 +22,7 @@ public abstract class IController:MonoBehaviour
         }
     }
 
-    public void RemoveControlTarget(ControlType controlType, UnityAction callback) {
+    public void RemoveControlTarget(ControlType controlType, UnityAction<object> callback) {
         if (!_controlListener.ContainsKey(controlType)) {
             Debug.Log("Not containing control listener");
             return;
@@ -36,15 +36,18 @@ public abstract class IController:MonoBehaviour
             Debug.Log("Removing control Type");
         }
     }
-        
-    protected void PostControlCommand(ControlType controlType)
+    
+    /// <summary>
+    /// </summary>
+    /// <param name="param">see ControlType's comment for the data type of the parameter</param>
+    protected void PostControlCommand(ControlType controlType, object param = null)
     {
         if (!_controlListener.ContainsKey(controlType))
         {
             Debug.Log("Not containing control listener");
             return;
         }
-        _controlListener[controlType].Invoke();
+        _controlListener[controlType].Invoke(param);
         Debug.Log("Posting control listener");
     }
 }
