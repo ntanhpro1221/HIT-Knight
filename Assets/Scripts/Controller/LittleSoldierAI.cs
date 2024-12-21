@@ -1,34 +1,49 @@
 ﻿using UnityEngine;
 
-public class LittleSoldierAI : IController
+/// <summary>
+/// You must call Init() to use it
+/// </summary>
+public abstract class IControllerAI : IController {
+    // dont declare or use IActor directly, just use neccessary its component
+    protected bool isInited = false;
+    protected Transform actorTrans;
+    protected IStalker stalker;
+    protected IWeaponHandler weaponHandler; 
+
+    /// <summary>
+    /// You must initialize this controller to use it
+    /// </summary>
+    /// <param name="actor">actor to controll</param>
+    public virtual void Init(IActor actor) {
+        isInited = true;
+        actorTrans = actor.transform;
+        stalker = actor.Stalker;
+        weaponHandler = actor.WeaponHandler;
+    }
+}
+
+public class LittleSoldierAI : IControllerAI
 {
-    private IActor actor; 
-    private float idleTimer = 0f; //đếm thời gian trong trạng thái idle
+    [SerializeField]
+    [Tooltip("Thời gian chờ trong trạng thái idle")]
     private float idleDuration = 2f; // thời gian chowff tromg trạng thái idle
-    private Vector2 wanderTarget; // vị trí di chuyển ngẫu nhiên
-    private const float attackRange = 2f; // tầm đánh
+    [SerializeField]
+    [Tooltip("Bán kính di chuyển ngẫu nhiên khi idle")]
     private const float wanderRadius = 3f; // bán kính di chuyển ngẫu nhiên khi idle
 
-    private void Awake()
-    {
-        actor = GetComponent<IActor>(); 
-        if (actor == null)
-        {
-            enabled = false; 
-        }
-        
-    }
+    private float idleTimer = 0f; //đếm thời gian trong trạng thái idle
+    private Vector2 wanderTarget; // vị trí di chuyển ngẫu nhiên
 
     private void Update()
     {
-        if (actor == null || actor.Stalker == null)
+        if (isInited == false)
         {
+            Util.LogWarning_WithAddress(gameObject, "LittleSoldierAI has not been initialized yet");
             return;
-        Debug.Log("IActor does not exist on " + gameObject.name);
         }
 
         // lấy mục tiêu top từ stalker
-        GameObject target = actor.Stalker.TopTarget.Value;
+        GameObject target = stalker.TopTarget.Value;
 
         if (target == null)
         {
@@ -48,32 +63,51 @@ public class LittleSoldierAI : IController
         {
             idleTimer = 0f; 
             wanderTarget = GetRandomWanderTarget(); //chon vị trí ngẫu nhiên
-            actor.MovementHandler.MoveByPos(wanderTarget); // điều khiển lính di chuyển tới vị trí mới
+            PostControlCommand(ControlType.MoveByPos, wanderTarget);// điều khiển lính di chuyển tới vị trí mới
         }
         else
         {
-            actor.BodyHandler.PlayAnim(ActorBodyHandler.Idle); // vẫn idel nếu chưa đủ time chờ
+            PostControlCommand(ControlType.Idle);// vẫn idel nếu chưa đủ time chờ
         }
+    }
+    
+    /// <summary>
+    /// FIXME: logic chưa chuẩn lắm
+    /// </summary>
+    private bool IsGoodToAttack(GameObject target) {
+        bool isGood = false;
+
+        // tính khoảng cách giữa soldier và mục tiêu
+        float distance = Vector3.Distance(target.transform.position, actorTrans.position);
+        // FIXME: tổ chức lại cái này, để ở đây chưa hợp logic
+        float MELEE_ATTACK_RANGE = 1;
+
+        isGood =
+            weaponHandler.CurWeapon is IRangedWeapon ||
+            distance <= MELEE_ATTACK_RANGE;
+
+        return isGood;
     }
 
     private void HandleTargetInteraction(GameObject target)
     {
-        // tính khoảng cách giữa soldier và mục tiêu
-        float distance = Vector3.Distance(target.transform.position, actor.transform.position);
-
-        if (distance > attackRange)
+        if (weaponHandler.CurWeapon == null) {
+            return;
+        }
+        
+        if (IsGoodToAttack(target))
         {
-            actor.MovementHandler.MoveByPos(target.transform.position); // move tới mục tiêu
+            PostControlCommand(ControlType.Attack);
         }
         else
         {
-            actor.WeaponHandler.Attack(); // thực hiện tấn công nếu trong tầm đánh
+            PostControlCommand(ControlType.MoveByPos, (Vector2)target.transform.position); // move tới mục tiêu
         }
     }
 
     private Vector2 GetRandomWanderTarget()
     {
-        Vector2 currentPosition = actor.transform.position; // lấy vị trí hiện tại của lính
+        Vector2 currentPosition = actorTrans.position; // lấy vị trí hiện tại của lính
         Vector2 randomDirection = Random.insideUnitCircle.normalized; // tạo hướng ngẫu nhiên
         return currentPosition + randomDirection * wanderRadius; //  vị trí ngẫu nhiên trong bán kính di chuyển
     }
