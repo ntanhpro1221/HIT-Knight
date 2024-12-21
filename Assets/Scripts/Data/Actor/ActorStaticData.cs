@@ -4,5 +4,5 @@
 public class ActorStaticData {
     public string id;
     public string name;
-    public ActorStats<float> stats;
+    public PropertySet<ActorStatType, float> stats;
 }
