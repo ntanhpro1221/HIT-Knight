@@ -1,10 +1,21 @@
-﻿using System;
+﻿using Firebase.Firestore;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
+[FirestoreData]
 [Serializable]
 public class RuneStaticData<T> where T : Enum {
-    public string id;
-    public string name;
-    public List<Buff<T>> listBuff;
-    public int cost;
+    [FirestoreProperty]
+    [field: SerializeField]
+    public string id { get; set; }
+    [FirestoreProperty]
+    [field: SerializeField]
+    public string name { get; set; }
+    [FirestoreProperty]
+    [field: SerializeField]
+    public List<BuffStaticData<T>> listBuff { get; set; }
+    [FirestoreProperty]
+    [field: SerializeField]
+    public int cost { get; set; }
 }

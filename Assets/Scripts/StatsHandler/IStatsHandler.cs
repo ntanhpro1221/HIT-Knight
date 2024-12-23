@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 public abstract class IStatsHandler<T> : CoreComponent where T : Enum {
     // lưu các buff hiện tại
-    private List<Buff<T>> buffs = new List<Buff<T>>();
+    private List<BuffStaticData<T>> buffs = new List<BuffStaticData<T>>();
     // lưu chỉ số gốc
     public PropertySet<T, BindableProperty<float>> RawStats { get; }
     // cs cuối ( chỉ số sau khi đã áp dụng buff)
@@ -13,11 +13,11 @@ public abstract class IStatsHandler<T> : CoreComponent where T : Enum {
         RawStats = new PropertySet<T, BindableProperty<float>>();
         CurStats = new PropertySet<T, BindableProperty<float>>();
     }
-    public void AddBuff(Buff<T> buff) {
+    public void AddBuff(BuffStaticData<T> buff) {
         buffs.Add(buff);
         UpdateStats();
     }
-    private void RemoveBuff(Buff<T> buff) {
+    private void RemoveBuff(BuffStaticData<T> buff) {
         buffs.Remove(buff);
         UpdateStats();
     }
@@ -44,7 +44,7 @@ public abstract class IStatsHandler<T> : CoreComponent where T : Enum {
 
     // cập nhật thời gian tồn tại của buff
     public void Update() {
-        foreach (Buff<T> buff in buffs) {
+        foreach (BuffStaticData<T> buff in buffs) {
             //giảm thời gian tồn tại của buff
             buff.existTime -= Time.deltaTime;
         }

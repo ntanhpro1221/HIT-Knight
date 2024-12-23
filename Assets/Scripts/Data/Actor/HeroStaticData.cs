@@ -1,6 +1,11 @@
-﻿using System;
+﻿using Firebase.Firestore;
+using System;
+using UnityEngine;
 
+[FirestoreData]
 [Serializable]
 public class HeroStaticData : ActorStaticData {
-    public int cost;
+    [FirestoreProperty]
+    [field: SerializeField]
+    public int cost { get; set; }
 }

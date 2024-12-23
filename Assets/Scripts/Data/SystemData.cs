@@ -1,14 +1,28 @@
-﻿using System;
+﻿using AYellowpaper.SerializedCollections;
+using Firebase.Firestore;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// Default data of game system.
 /// </summary>
+[FirestoreData]
 [Serializable]
 public class SystemData {
-    public Dictionary<string, HeroStaticData> heroData;
-    public Dictionary<string, EnemyStaticData> enemyData;
-    public Dictionary<string, RuneStaticData<ActorStatType>> actorRuneData;
-    public Dictionary<string, RuneStaticData<WeaponStatType>> weaponRuneData;
-    public Dictionary<string, WeaponStaticData> weaponData;
+    [FirestoreProperty]
+    [field: SerializeField]
+    public SerializedDictionary<string, HeroStaticData> heroData { get; set; }
+    [FirestoreProperty]
+    [field: SerializeField]
+    public SerializedDictionary<string, EnemyStaticData> enemyData {get; set; }
+    [FirestoreProperty]
+    [field: SerializeField]
+    public SerializedDictionary<string, RuneStaticData<ActorStatType>> actorRuneData {get; set; }
+    [FirestoreProperty]
+    [field: SerializeField]
+    public SerializedDictionary<string, RuneStaticData<WeaponStatType>> weaponRuneData {get; set; }
+    [FirestoreProperty]
+    [field: SerializeField]
+    public SerializedDictionary<string, WeaponStaticData> weaponData {get; set; }
 }

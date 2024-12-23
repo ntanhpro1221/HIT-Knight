@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1055159050382",
+    "firebase_url": "https://hit-knight-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "hit-knight",
+    "storage_bucket": "hit-knight.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055159050382:android:29e2d06f1ab58a67ed29df",
+        "android_client_info": {
+          "package_name": "com.NGDtuanh.HIT_Knight"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3x4Ul-DlCmQfhbmcGCP-_nWVdSDEhkkQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
