@@ -17,9 +17,9 @@ using UnityEngine;
 
 public class Alice : MonoBehaviour {
     [SerializeField]
-    private ActorStats<int> lmao;
+    private PropertySet<ActorStatType, int> lmao;
     [SerializeField]
-    private SerializedDictionary<string, ActorStats<int>> data;
+    private SerializedDictionary<string, PropertySet<ActorStatType, int>> data;
     [SerializeField]
-    private List<ActorStats<int>> burh;
+    private List<PropertySet<ActorStatType, int>> burh;
 }

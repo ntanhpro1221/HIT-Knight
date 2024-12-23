@@ -1,18 +1,9 @@
-﻿using Firebase.Firestore;
-using System;
-using UnityEngine;
+﻿using System;
 
-[FirestoreData]
 [Serializable]
 public class WeaponStaticData {
-    [FirestoreProperty]
-    [field: SerializeField]
-    public string id { get; set; }
-    [FirestoreProperty]
-    [field: SerializeField]
-    public string name { get; set; }
-    [FirestoreProperty]
-    [field: SerializeField]
-    public WeaponStats<float> stats { get; set; }
+    public string id;
+    public string name;
+    public PropertySet<WeaponStatType, float> stats;
 }
 
