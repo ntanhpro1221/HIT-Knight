@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Firebase.Firestore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -11,7 +13,7 @@ using UnityEngine.UIElements;
 /// <typeparam name="TKey">Enum type of key</typeparam>
 /// <typeparam name="TValue">Data type of each element</typeparam>
 [Serializable]
-public class PropertySet<TKey, TValue> where TKey : Enum {
+public class PropertySet<TKey, TValue> : Dictionary<string, TValue>, ISerializationCallbackReceiver where TKey : Enum {
     /// <summary>
     /// to get enum type
     /// </summary>
@@ -21,17 +23,49 @@ public class PropertySet<TKey, TValue> where TKey : Enum {
     /// </summary>
     [SerializeField] private string[] m_Keys;
     [SerializeField] private TValue[] m_Values;
-    public PropertySet() {
+    
+    private void InitEnumField() {
         m_Keys = Enum.GetNames(typeof(TKey));
-        m_Values = new TValue[Enum.GetValues(typeof(TKey)).Length];
+        m_Values = new TValue[Enum.GetNames(typeof(TKey)).Length];
     }
+
+    public PropertySet() : base() => InitEnumField();
+
     private int EToInt(TKey key) => Convert.ToInt32(key);
+
     public TValue this[TKey key] {
         get => m_Values[EToInt(key)];
         set => m_Values[EToInt(key)] = value;
     }
-    public static implicit operator Dictionary<TKey, TValue>(PropertySet<TKey, TValue> obj)
-        => (Enum.GetValues(typeof(TKey)) as TKey[]).ToDictionary(key => key, key => obj[key]);
+
+    public void OnBeforeSerialize() {
+        if (m_Keys.Length == 0) InitEnumField();
+        foreach (TKey key in Enum.GetValues(typeof(TKey))) 
+            if (Keys.Contains(key.ToString())) 
+                this[key] = base[key.ToString()];
+    }
+
+    public void OnAfterDeserialize() {
+        if (m_Keys.Length == 0) InitEnumField();
+        base.Clear();
+        foreach (TKey key in Enum.GetValues(typeof(TKey)))
+            base.Add(key.ToString(), this[key]);
+    }
+    
+    public new TValue this[string key] {
+        get => throw new Exception("Dont use this function!!!");
+        set => throw new Exception("Dont use this function!!!");
+    }
+    public new void Add(string key, TValue value) 
+        => throw new Exception("Dont use this function!!!");
+    public new bool TryAdd(string key, TValue value) 
+        => throw new Exception("Dont use this function!!!");
+    public new void Clear() 
+        => throw new Exception("Dont use this function!!!");
+    public new bool Remove(string key) 
+        => throw new Exception("Dont use this function!!!");
+    public new bool Remove(string key, out TValue value) 
+        => throw new Exception("Dont use this function!!!");
 }
 
 #if UNITY_EDITOR
@@ -43,9 +77,9 @@ public class StatsDrawer : PropertyDrawer {
     private SerializedProperty m_KeyType;
     private SerializedProperty m_Keys;
     private SerializedProperty m_Values;
-    private bool m_Dirty = true;
+    private bool m_Dirty;
     private float LineHeight => EditorGUIUtility.singleLineHeight;
-    private float LineSpace => 2;    
+    private float LineSpace => 2;
 
     public override VisualElement CreatePropertyGUI(SerializedProperty property) {
         m_Dirty = true;
@@ -53,9 +87,9 @@ public class StatsDrawer : PropertyDrawer {
     }
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
-        m_KeyType ??= property.FindPropertyRelative(nameof(m_KeyType));
-        m_Keys ??= property.FindPropertyRelative(nameof(m_Keys));
-        m_Values ??= property.FindPropertyRelative(nameof(m_Values));
+        m_KeyType = property.FindPropertyRelative(nameof(m_KeyType));
+        m_Keys = property.FindPropertyRelative(nameof(m_Keys));
+        m_Values = property.FindPropertyRelative(nameof(m_Values));
         if (m_Dirty) Clean();
 
         float height = LineHeight;
@@ -99,6 +133,7 @@ public class StatsDrawer : PropertyDrawer {
                 return false;
         return true;
     }
+
     private void UpdateEnumKey() {
         // Key algorithm: foreach element in new enum key, restore value if this key exist in old enum key
         
@@ -138,6 +173,7 @@ public class StatsDrawer : PropertyDrawer {
         for (int i = 0; i < m_Keys.arraySize; ++i)
             m_Keys.GetArrayElementAtIndex(i).stringValue = m_KeyType.enumNames[i];
     }
+
     private void Clean() {
         m_Dirty = false;
         if (CheckEnumKeyIntact() == false) UpdateEnumKey();

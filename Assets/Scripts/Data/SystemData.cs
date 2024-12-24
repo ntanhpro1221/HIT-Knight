@@ -15,14 +15,14 @@ public class SystemData {
     public SerializedDictionary<string, HeroStaticData> heroData { get; set; }
     [FirestoreProperty]
     [field: SerializeField]
-    public SerializedDictionary<string, EnemyStaticData> enemyData {get; set; }
+    public SerializedDictionary<string, EnemyStaticData> enemyData { get; set; }
     [FirestoreProperty]
     [field: SerializeField]
-    public SerializedDictionary<string, RuneStaticData<ActorStatType>> actorRuneData {get; set; }
+    public SerializedDictionary<string, RuneStaticData<ActorStatType>> actorRuneData { get; set; }
     [FirestoreProperty]
     [field: SerializeField]
-    public SerializedDictionary<string, RuneStaticData<WeaponStatType>> weaponRuneData {get; set; }
+    public SerializedDictionary<string, RuneStaticData<WeaponStatType>> weaponRuneData { get; set; }
     [FirestoreProperty]
     [field: SerializeField]
-    public SerializedDictionary<string, WeaponStaticData> weaponData {get; set; }
+    public SerializedDictionary<string, WeaponStaticData> weaponData { get; set; }
 }

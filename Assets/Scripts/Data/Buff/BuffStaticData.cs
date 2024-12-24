@@ -11,6 +11,9 @@ using UnityEngine;
 public class BuffStaticData<T> where T : Enum {
     [FirestoreProperty]
     [field: SerializeField]
+    public bool isForever { get; set; }
+    [FirestoreProperty]
+    [field: SerializeField]
     public float existTime { get; set; }
     [FirestoreProperty]
     [field: SerializeField]

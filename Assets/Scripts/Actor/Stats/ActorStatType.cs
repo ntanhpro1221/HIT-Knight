@@ -1,6 +1,6 @@
 ﻿public enum ActorStatType {
     HP,
-    MP,
+    MP, 
     Armor,
-    MoveSpeed
+    MoveSpeed,
 }

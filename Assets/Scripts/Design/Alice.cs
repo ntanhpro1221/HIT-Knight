@@ -1,25 +1,21 @@
-﻿using AYellowpaper.SerializedCollections;
-using Firebase.Firestore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-//[FirestoreData]
-//[Serializable]
-//public class SystemData2 {
-//    [FirestoreProperty]
-//    [field: SerializeField]
-//    public SerializedDictionary<string, HeroStaticData> heroData { get; set; }
-//    [FirestoreProperty]
-//    [field: SerializeField]
-//    HeroStaticData> heroData { get; set; }
-//}
-
 public class Alice : MonoBehaviour {
-    [SerializeField]
-    private PropertySet<ActorStatType, int> lmao;
-    [SerializeField]
-    private SerializedDictionary<string, PropertySet<ActorStatType, int>> data;
-    [SerializeField]
-    private List<PropertySet<ActorStatType, int>> burh;
+    Rigidbody2D rb;
+    public float speed = 5;
+    private void Start() {
+        rb = GetComponent<Rigidbody2D>();
+    }
+    private void FixedUpdate() {
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+            rb.velocity = Vector2.left * speed;
+            print(rb.velocity);
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow)) {
+            rb.velocity = Vector2.right * speed;
+            print(rb.velocity);
+        }
+    }
 }

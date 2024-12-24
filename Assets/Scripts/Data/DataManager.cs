@@ -1,4 +1,5 @@
-﻿using Firebase.Database;
+﻿using AYellowpaper.SerializedCollections;
+using Firebase.Database;
 using Firebase.Firestore;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
@@ -51,7 +52,7 @@ public class DataManager : Singleton<DataManager>, IDataManager {
         }
         print($"Done save {data.GetType().Name} ({Time.time})");
     }
-    private async Task SaveObjectAsync(DocumentReference dataRef, object data) { 
+    private async Task SaveObjectAsync(DocumentReference dataRef, object data) {
         print($"Start save {data.GetType().Name} ({Time.time})");
         try {
             await dataRef.SetAsync(data);
@@ -63,10 +64,8 @@ public class DataManager : Singleton<DataManager>, IDataManager {
 
     protected override void Awake() {
         base.Awake();
-        Task.WhenAll(
-            LoadUserDataAsync(),
-            LoadSystemDataAsync())
-            .Wait();
+        LoadUserDataAsync();
+        LoadSystemDataAsync();
     }
 
     [SerializeField] private UserData m_UserData;

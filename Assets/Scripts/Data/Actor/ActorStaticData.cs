@@ -1,8 +1,17 @@
-﻿using System;
+﻿using Firebase.Firestore;
+using System;
+using UnityEngine;
 
+[FirestoreData]
 [Serializable]
 public class ActorStaticData {
-    public string id;
-    public string name;
-    public PropertySet<ActorStatType, float> stats;
+    [FirestoreProperty]
+    [field: SerializeField]
+    public string id { get; set; }
+    [FirestoreProperty]
+    [field: SerializeField]
+    public string name { get; set; }
+    [FirestoreProperty]
+    [field: SerializeField]
+    public PropertySet<ActorStatType, float> stats { get; set; }
 }
