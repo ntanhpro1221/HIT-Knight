@@ -6,26 +6,34 @@ using UnityEngine;
 /// Manage current health of actor.
 /// </summary>
 public class HealthHandler : CoreComponent, IHealthHandler {
-    private BindableProperty<float> m_MaxHealth;
-    private readonly BindableProperty<float> m_CurHealth = new();
+    private ActorStatsHandler StatsHandler => GetCoreComponent<ActorStatsHandler>();
+    private bool isHPInitialized = false;
 
-    private void OnMaxHpChanged(float newMaxHp) {
-        m_CurHealth.Value = Mathf.Min(m_CurHealth.Value, newMaxHp);
-    }
-    private void ChangeHealthSource(BindableProperty<float> newHealthSource) {
-        if (newHealthSource is null) {
-            Debug.Log(this.GetType().Name + ": Health source is null");
-            return;
+    private void Awake() {
+        if (StatsHandler.IsStatsCalculated) {
+            isHPInitialized = true;
+            CurHealth.Value = MaxHealth.Value;
+        } else {
+            MaxHealth.OnChanged.AddListener(hp => {
+                if (isHPInitialized) return;
+                isHPInitialized = true;
+                CurHealth.Value = hp;
+            });
         }
-        m_MaxHealth?.OnChanged.RemoveListener(OnMaxHpChanged);
-        m_MaxHealth = newHealthSource;
-        m_MaxHealth.OnChanged.AddListener(OnMaxHpChanged);
-        m_CurHealth.Value = m_MaxHealth.Value;
     }
 
-    public void Init(BindableProperty<float> newHealthSource) => ChangeHealthSource(newHealthSource);
-    public bool IsDead => m_CurHealth.Value <= 0;
-    public BindableProperty<float> CurHealth => m_CurHealth;
-    public void Heal(float amount) => m_CurHealth.Value = Mathf.Min(m_CurHealth.Value + amount, m_MaxHealth.Value);
-    public void TakeDamage(float damage) => m_CurHealth.Value = Mathf.Max(m_CurHealth.Value - damage, 0);
+    public bool IsDead
+        => CurHealth.Value <= 0;
+
+    [field: SerializeField] public BindableProperty<float> CurHealth 
+        { get; private set; } = new();
+
+    public BindableProperty<float> MaxHealth 
+        => GetCoreComponent<ActorStatsHandler>().CurStats[ActorStatType.HP];
+
+    public void Heal(float amount) 
+        => CurHealth.Value = Mathf.Min(CurHealth.Value + amount, MaxHealth.Value);
+    
+    public void TakeDamage(float damage) 
+        => CurHealth.Value = Mathf.Max(CurHealth.Value - damage, 0);
 }

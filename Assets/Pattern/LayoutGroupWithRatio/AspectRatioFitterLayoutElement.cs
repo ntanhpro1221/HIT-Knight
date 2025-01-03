@@ -26,7 +26,7 @@ public class AspectRatioFitterLayoutElement : UIBehaviour, ILayoutSelfController
     /// </summary>
     public enum AspectMode {
         /// <summary>
-        /// The aspect ratio is not enforced
+        /// The aspect ratio != enforced
         /// </summary>
         None,
         /// <summary>
@@ -107,7 +107,7 @@ public class AspectRatioFitterLayoutElement : UIBehaviour, ILayoutSelfController
 
     protected override void Start() {
         base.Start();
-        //Disable the component if the aspect mode is not valid or the object state/setup is not supported with AspectRatio setup.
+        //Disable the component if the aspect mode != valid or the object state/setup != supported with AspectRatio setup.
         if (!IsComponentValidOnObject() || !IsAspectModeValid())
             this.enabled = false;
     }

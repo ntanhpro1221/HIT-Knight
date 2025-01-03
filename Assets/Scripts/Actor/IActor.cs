@@ -1,36 +1,69 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 /// <summary>
 /// Base of actor
 /// </summary>
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Coord3DSimilator))]    
 public abstract class IActor : MonoBehaviour {
-    protected Core m_Core;
+    #region CONFIG
+    [field: SerializeField] public string ActorId { get; private set; } = "001";
+    #endregion
+
+    #region CORE COMPONENT
+    private Core m_Core;
+    public Core Core => m_Core ??= GetComponentsInChildren<Core>().FirstOrDefault(cpn => transform == cpn.transform.parent);
     /// <summary>
     /// Use weapon
     /// </summary>
-    public IWeaponHandler WeaponHandler { get; set; }
+    public WeaponHandler WeaponHandler 
+        => Core.GetCoreComponent<WeaponHandler>();
     /// <summary>
     /// Manage health
     /// </summary>
-    public IHealthHandler HealthHandler { get; set; }
+    public HealthHandler HealthHandler 
+        => Core.GetCoreComponent<HealthHandler>();
     /// <summary>
     /// Manage movement
     /// </summary>
-    public IMoveHandler MovementHandler { get; set; }
+    public ActorMoveHandler MoveHandler 
+        => Core.GetCoreComponent<ActorMoveHandler>();
     /// <summary>
     /// Stalk object to attack
     /// </summary>
-    public IStalker Stalker { get; set; }
+    public IStalker Stalker 
+        => Core.GetCoreComponent<IStalker>();
     /// <summary>
     /// Manage state
     /// </summary>
-    public IActorSM StateMachine { get; set; }
+    public ActorSM StateMachine 
+        => Core.GetCoreComponent<ActorSM>();
     /// <summary>
     /// Manage stats
     /// </summary>
-    public ActorStatsHandler StatsHandler { get; set; }
+    public ActorStatsHandler StatsHandler 
+        => Core.GetCoreComponent<ActorStatsHandler>();
     /// <summary>
     /// Manage body
     /// </summary>
-    public ActorBodyHandler BodyHandler { get; set; }
+    public ActorBodyHandler BodyHandler 
+        => Core.GetCoreComponent<ActorBodyHandler>();
+    /// <summary>
+    /// Control adapter
+    /// </summary>
+    public IActorControlHelper ControlHelper 
+        => Core.GetCoreComponent<IActorControlHelper>();
+    /// <summary>
+    /// Control direction
+    /// </summary>
+    public ActorNavigator Navigator 
+        => Core.GetCoreComponent<ActorNavigator>();
+
+    public Rigidbody2D RB 
+        => GetComponent<Rigidbody2D>();
+    #endregion
+    
+    protected virtual void Awake() { }
 }
+

@@ -7,33 +7,33 @@ using UnityEngine;
 /// </summary>
 [RequireComponent(typeof(Collider2D))]
 public abstract class IStalker : CoreComponent {
-    private readonly List<GameObject> m_TargetList = new();
-    private readonly BindableProperty<GameObject> m_TopTarget = new();
+    [field: SerializeField] 
+    private List<GameObject> TargetList { get; set; } = new();
 
     private void ReCalcTopTarget() {
-        m_TargetList.Sort(CompareTarget);
-        m_TopTarget.Value = m_TargetList.LastOrDefault(ValidateTarget);
+        TargetList.Sort(CompareTarget);
+        TopTarget.Value = TargetList.LastOrDefault(ValidateTarget_ByCurBehaviour);
     }
 
     private void Update() {
         ReCalcTopTarget();
     }
 
-    /// <summary>
-    /// Most attention target (determine by CompareTarget function).
-    /// </summary>
-    public BindableProperty<GameObject> TopTarget => m_TopTarget;
+    [field: SerializeField]
+    public BindableProperty<GameObject> TopTarget { get; private set; } = new();
     /// <summary>
     /// add object in range
     /// </summary>
-    private void OnTriggerEnter2D(Collider2D other) {
-        m_TargetList.Add(ToTargetType(other));
+    private void OnTriggerEnter2D(Collider2D coll) {
+        if (ValidateTarget_FromTheBeginning(coll))
+            TargetList.Add(ToTargetType(coll));
     }
     /// <summary>
-    /// remove object if it is not in collider range
+    /// remove object if it != in collider range
     /// </summary>
-    private void OnTriggerExit2D(Collider2D other) {
-        m_TargetList.Remove(ToTargetType(other));
+    private void OnTriggerExit2D(Collider2D coll) {
+        if (ValidateTarget_FromTheBeginning(coll))
+            TargetList.Remove(ToTargetType(coll));
     }
     /// <summary>
     /// Get GameObject that need to stalk from its collider.
@@ -41,10 +41,15 @@ public abstract class IStalker : CoreComponent {
     /// Implement by children
     public abstract GameObject ToTargetType(Collider2D coll);
     /// <summary>
-    /// Check if this target need to stalk.
+    /// Check if this obj should be stalked
+    /// </summary>
+    /// <returns></returns>
+    public abstract bool ValidateTarget_FromTheBeginning(Collider2D target);
+    /// <summary>
+    /// Check if this obj deserves to be top target (still be stalked but not be top target)
     /// </summary>
     /// Implement by children
-    public abstract bool ValidateTarget(GameObject target);
+    public abstract bool ValidateTarget_ByCurBehaviour(GameObject target);
     /// <summary>
     /// Compare the priority of two target.
     /// </summary>

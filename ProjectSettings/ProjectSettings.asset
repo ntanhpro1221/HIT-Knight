@@ -142,9 +142,9 @@ PlayerSettings:
   tvOSBundleVersion: 1.0
   bundleVersion: 1.0.0
   preloadedAssets:
-  - {fileID: 6019724020206551772, guid: b24b31acbe5298e40b5bdaf1d19f3f52, type: 2}
-  - {fileID: 11400000, guid: eca826951bd7c5e409ca9bbc4a296d9f, type: 2}
-  - {fileID: 11400000, guid: 1c2ed54fa4bb7c4429ba935c588f5bcb, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: -944628639613478452, guid: f488c0fd44006ad43a4f1b487ca7b482, type: 3}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -820,7 +820,7 @@ PlayerSettings:
     tvOS: 1
   incrementalIl2cppBuild: {}
   suppressCommonWarnings: 1
-  allowUnsafeCode: 0
+  allowUnsafeCode: 1
   useDeterministicCompilation: 1
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
@@ -903,7 +903,7 @@ PlayerSettings:
   hmiLogStartupTiming: 0
   hmiCpuConfiguration: 
   apiCompatibilityLevel: 6
-  activeInputHandler: 0
+  activeInputHandler: 1
   windowsGamepadBackendHint: 0
   cloudProjectId: 
   framebufferDepthMemorylessMode: 0

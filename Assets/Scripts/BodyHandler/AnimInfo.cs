@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 /// <summary>
 /// Infomation of animation clip.
@@ -9,12 +10,18 @@ public class AnimInfo {
     /// <summary>
     /// Name of animation.
     /// </summary>
-    public readonly string name;
+    [field: SerializeField]
+    public string Name { get; private set; }
+    /// <summary>
+    /// Hash of Name using Animator.StringToHash()
+    /// </summary>
+    public int HashName { get; }
     /// <summary>
     /// Name of variable that controls the play speed of animation.
     /// </summary>
-    public string SpeedVar => name + "_Speed";
+    public string SpeedVarName => Name + "_Speed";
     public AnimInfo(string name) {
-        this.name = name;
+        Name = name;
+        HashName = Animator.StringToHash(name);
     }
 }

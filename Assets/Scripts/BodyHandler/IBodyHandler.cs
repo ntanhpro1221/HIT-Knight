@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
@@ -8,9 +9,11 @@ using UnityEngine;
 /// </summary>
 /// <typeparam name="T">Enum that describes all type of event that will be called by animation</typeparam>
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Collider2D))]
 public abstract class IBodyHandler<T> : CoreComponent, IAnimUsable, IAnimHandlable<T> where T : Enum {
     private Animator animator;
-    private Dictionary<T, Action> AnimEvents = new Dictionary<T, Action>();
+    private Dictionary<T, Action> animEvents = new();
+    private Dictionary<int, float> animLength = new();
     protected virtual void Awake() {
         animator = GetComponent<Animator>();
     }
@@ -20,63 +23,57 @@ public abstract class IBodyHandler<T> : CoreComponent, IAnimUsable, IAnimHandlab
         animator = GetComponent<Animator>();
     }
     public void RegisterAnimEvent(T type, Action callback) {
-        if (AnimEvents.ContainsKey(type)) {
-            AnimEvents[type] += callback;
+        if (animEvents.ContainsKey(type)) {
+            animEvents[type] += callback;
         } else {
-            AnimEvents.Add(type, null);
-            AnimEvents[type] += callback;
+            animEvents.Add(type, null);
+            animEvents[type] += callback;
         }
     }
     public void RemoveAnimEvent(T type, Action callback) {
-        if (!AnimEvents.ContainsKey(type)) {
+        if (!animEvents.ContainsKey(type)) {
             Debug.Log("Not Found Type: " + type.GetType().Name);
             return;
         }
-        AnimEvents[type] -= callback;
+        animEvents[type] -= callback;
     }
     public void PostAnimEvent(T type) {
-        if (!AnimEvents.ContainsKey(type)) {
-            Debug.Log("Event has no Listener");
-            return;
-        }
+        if (!animEvents.ContainsKey(type)) return;
 
-        Action callback = AnimEvents[type];
+        Action callback = animEvents[type];
         if (callback != null) {
             callback();
         } else {
             Debug.Log("PostEvent " + type.GetType().Name + "but no listener remain, Remove this key");
-            AnimEvents.Remove(type);
+            animEvents.Remove(type);
         }
     }
     public void PlayAnim(AnimInfo anim) {
         if (anim != null) {
-            animator.Play(anim.name);
+            animator.Play(anim.Name);
         }
     }
     public void PlayAnim(AnimInfo anim, float normalizedTime) {
         if (anim != null) {
-            animator.Play(anim.name, 0, normalizedTime);
+            animator.Play(anim.Name, 0, normalizedTime);
         }
     }
-    public void SetAnimLength(AnimInfo anim, float length) {
-        if (anim == null) {
-            Debug.LogWarning("AnimInfo is null.");
-            return;
+    public void PlayAnim(AnimInfo anim, float normalizedTime, float durationTime) {
+        PlayAnim(anim, normalizedTime);
+        if (animLength.ContainsKey(anim.HashName)) setSpeed();
+        else StartCoroutine(setSpeed_AfterGetSpeed());
+
+        void setSpeed() {
+            float speed = animLength[anim.HashName] / durationTime;
+            animator.SetFloat(anim.SpeedVarName, speed);
         }
 
-        if (animator == null) {
-            Debug.LogWarning("Animator not found on this GameObject.");
-            return;
-        }
-        AnimationClip[] allAnimationClip = animator.runtimeAnimatorController.animationClips;
-        var animClip = allAnimationClip.FirstOrDefault(clip => clip.name.Equals(anim.name));
-        if (animClip != null) {
-            float currSpeed = animClip.length;
-            float speed = currSpeed / length;
-            Debug.Log(currSpeed);
-            animator.SetFloat(anim.SpeedVar, speed);
-        } else {
-            Debug.LogWarning($"Animation with name containing '{anim.name}' not found in Animator.");
+        IEnumerator setSpeed_AfterGetSpeed() {
+            yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).shortNameHash == anim.HashName);
+            animLength.Add(anim.HashName, animator.GetCurrentAnimatorStateInfo(0).length);
+            setSpeed();
         }
     }
+
+    protected virtual void Update() { }
 }

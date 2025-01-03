@@ -14,7 +14,13 @@ public static class Util {
             return null;
         }
     }
+    public static void Log_WithAddress(GameObject objAddress, string mes) {
+        Debug.Log(GetHierarchyPath(objAddress) + " --> " + mes);
+    }
     public static void LogWarning_WithAddress(GameObject objAddress, string mes) {
         Debug.LogWarning(GetHierarchyPath(objAddress) + " --> " + mes);
+    }
+    public static void LogError_WithAddress(GameObject objAddress, string mes) {
+        Debug.LogError(GetHierarchyPath(objAddress) + " --> " + mes);
     }
 }

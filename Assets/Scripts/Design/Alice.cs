@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Alice : MonoBehaviour {
-    Rigidbody2D rb;
-    public float speed = 5;
-    private void Start() {
-        rb = GetComponent<Rigidbody2D>();
-    }
-    private void FixedUpdate() {
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-            rb.velocity = Vector2.left * speed;
-            print(rb.velocity);
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            rb.velocity = Vector2.right * speed;
-            print(rb.velocity);
-        }
+    private readonly AntiNull<PlayerInput> input = new(() => new());
+
+    private void OnEnable()
+        => input.Value.Enable();
+
+    private void OnDisable()
+        => input.Value.Disable();
+
+    public bool NoCommand 
+        => false == input.Value.asset.FindActionMap(nameof(input.Value.InBattle)).actions.
+            Any(action => action.phase != InputActionPhase.Waiting);
+    private void Update() {
+        print(NoCommand);
     }
 }
+

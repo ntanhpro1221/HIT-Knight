@@ -64,8 +64,8 @@ public class DataManager : Singleton<DataManager>, IDataManager {
 
     protected override void Awake() {
         base.Awake();
-        LoadUserDataAsync();
-        LoadSystemDataAsync();
+        _ = LoadUserDataAsync();
+        _ = LoadSystemDataAsync();
     }
 
     [SerializeField] private UserData m_UserData;

@@ -1,24 +1,25 @@
 ﻿using System;
+using UnityEngine;
 
 /// <summary>
 /// Single state of a state machine.
 /// </summary>
-/// <typeparam name="T">Type of body handler</typeparam>
-public abstract class IState {
-    protected IStateMachine sm;
-    protected AnimInfo anim;
-    protected IAnimUsable animUser;
+[Serializable]
+public class IState {
+    [field: SerializeField]
+    public string Name { get; private set; }
+    protected readonly IStateMachine sm;
 
-    public IState(IStateMachine sm, AnimInfo anim, IAnimUsable animUser) {
-        this.sm = sm;
-        this.anim = anim;
-        this.animUser = animUser;
+    [Obsolete(__GeneralStateWarning)]
+    public IState(string name, IStateMachine sm) {
+        this.Name = name;
+        this.sm = sm; 
     }
-    
+
     /// <summary>
     /// Be called when start a state.
     /// </summary>
-    public virtual void Enter() => animUser?.PlayAnim(anim, 0);
+    public virtual void Enter() { }
     /// <summary>
     /// Find out if it can move to any other state.
     /// Return null if it cannot move to other state.
@@ -28,12 +29,17 @@ public abstract class IState {
     /// Update object when it is in this state.
     /// </summary>
     public virtual void Update() { }
-    /// <summary>
+    /// abstr;
     /// FixedUpdate object when it is in this state.
     /// </summary>
     public virtual void FixedUpdate() { }
     /// <summary>
-    /// Be called when exit a state.
+    /// called when exit a st;
     /// </summary>
     public virtual void Exit() { }
+
+    #region NEVER MIND
+    public const string __GeneralStateWarning = "This is genaral state constructor, dont use it!! (except in the class that inherit it)";
+    public const string __HeadStateWarning = "This is state's head constructor, dont use it!! (except in the ConnectedState)";
+    #endregion
 }

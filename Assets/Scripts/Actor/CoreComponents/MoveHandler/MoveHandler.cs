@@ -5,15 +5,23 @@ using UnityEngine;
 /// <summary>
 /// Manage actor movement through rigidbody
 /// </summary>
-public class MoveHandler : CoreComponent, IMoveHandler {
-    private Rigidbody2D m_Rb;
-    private BindableProperty<float> m_MoveSpeed;
+public abstract class MoveHandler : CoreComponent, IMoveHandler {
+    protected abstract Rigidbody2D RB { get; }
+    protected abstract BindableProperty<float> MoveSpeed { get; }
 
-    private MoveState m_CurState = MoveState.Nope;
+    public float MaxCooldownTime => m_StateData_Dash.dashCoolDownTime;
+    public float CurCooldownTime => m_StateData_Dash.curDashCooldownTime;
+    public bool IsReadyToDash => m_StateData_Dash.curDashCooldownTime <= 0;
+    [field: SerializeField]
+    public MoveState CurState { get; private set; } = MoveState.Nope;
     private StateData_MoveByPos m_StateData_MoveByPos;
-    [SerializeField] private StateData_Dash m_StateData_Dash = new() { dashSpeed = 10, dashTime = 1};
+    [SerializeField] private StateData_Dash m_StateData_Dash = new() { 
+        dashSpeed = 20, 
+        dashDuration = 0.15f,
+        dashCoolDownTime = 5,
+    };
 
-    private enum MoveState {
+    public enum MoveState {
         Nope,
         MoveByDir,
         MoveByPos,
@@ -24,33 +32,38 @@ public class MoveHandler : CoreComponent, IMoveHandler {
     }
     [Serializable] private struct StateData_Dash {
         public float dashSpeed;
-        public float dashTime;
-        [HideInInspector] public float curDashTime;
+        public float dashDuration;
+        public float dashCoolDownTime;
+        [HideInInspector] public float curDashDuration;
+        [HideInInspector] public float curDashCooldownTime;
     }
 
     private void UpdateState_Nope() { }
     private void UpdateState_MoveByDir() { }
     private void UdpateState_MoveByPos() {
-        float disToDes = Vector2.Distance(m_Rb.position, m_StateData_MoveByPos.des);
+        float disToDes = Vector2.Distance(RB.position, m_StateData_MoveByPos.des);
         if (disToDes <= float.Epsilon) {
             StopMove();
             return;
         }
-        if (disToDes <= m_MoveSpeed.Value * Time.fixedDeltaTime) {
-            m_Rb.velocity = Vector2.zero;
-            m_Rb.MovePosition(m_StateData_MoveByPos.des);
+        if (disToDes <= MoveSpeed.Value * Time.fixedDeltaTime) {
+            RB.velocity = Vector2.zero;
+            RB.MovePosition(m_StateData_MoveByPos.des);
             return;
         }
     }
     private void UpdateState_Dash() {
-        m_StateData_Dash.curDashTime -= Time.fixedDeltaTime;
-        if (m_StateData_Dash.curDashTime < 0) {
+        m_StateData_Dash.curDashDuration -= Time.fixedDeltaTime;
+        if (m_StateData_Dash.curDashDuration < 0) {
             StopMove();
             return;
         }
     }
     private void FixedUpdate() {
-        switch (m_CurState) {
+        m_StateData_Dash.curDashCooldownTime = Math.Max(-1, 
+            m_StateData_Dash.curDashCooldownTime - Time.fixedDeltaTime);
+
+        switch (CurState) {
             case MoveState.Nope: UpdateState_Nope(); break;
             case MoveState.MoveByDir: UpdateState_MoveByDir(); break;
             case MoveState.MoveByPos: UdpateState_MoveByPos(); break;
@@ -63,27 +76,24 @@ public class MoveHandler : CoreComponent, IMoveHandler {
         }
     }
 
-    public void Init(Rigidbody2D rb, BindableProperty<float> moveSpeed) {
-        m_Rb = rb;
-        m_MoveSpeed = moveSpeed;
-    }
-    public Vector2 Velocity => m_Rb.velocity;
+    public Vector2 Velocity => RB.velocity;
     public virtual void MoveByDir(Vector2 dir) {
-        m_CurState = MoveState.MoveByDir;
-        m_Rb.velocity = dir.normalized * m_MoveSpeed.Value;
+        CurState = MoveState.MoveByDir;
+        RB.velocity = dir.normalized * MoveSpeed.Value;
     }
     public void MoveByPos(Vector2 pos) {
-        m_CurState = MoveState.MoveByPos;
+        CurState = MoveState.MoveByPos;
         m_StateData_MoveByPos.des = pos;
-        m_Rb.velocity = (pos - m_Rb.position).normalized * m_MoveSpeed.Value;
+        RB.velocity = (pos - RB.position).normalized * MoveSpeed.Value;
     }
     public void Dash(Vector2 dir) {
-        m_CurState = MoveState.Dash;
-        m_StateData_Dash.curDashTime = m_StateData_Dash.dashTime;
-        m_Rb.velocity = dir.normalized * m_StateData_Dash.dashSpeed;
+        CurState = MoveState.Dash;
+        m_StateData_Dash.curDashDuration = m_StateData_Dash.dashDuration;
+        m_StateData_Dash.curDashCooldownTime = m_StateData_Dash.dashCoolDownTime;
+        RB.velocity = dir.normalized * m_StateData_Dash.dashSpeed;
     }
     public void StopMove() {
-        m_CurState = MoveState.Nope;
-        m_Rb.velocity = Vector2.zero;
+        CurState = MoveState.Nope;
+        RB.velocity = Vector2.zero;
     }
 }

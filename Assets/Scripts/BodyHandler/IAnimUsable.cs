@@ -2,10 +2,10 @@
 /// Handle animation through AnimInfo.
 /// </summary>
 public interface IAnimUsable {
-    public void PlayAnim(AnimInfo anim);
-    public void PlayAnim(AnimInfo anim, float normalizedTime);
+    void PlayAnim(AnimInfo anim);
+    void PlayAnim(AnimInfo anim, float normalizedTime);
     /// <summary>
-    /// Set length of anim (how long it take to finish running).
+    /// Set length of anim (how long it take to finish running)
     /// </summary>
-    public void SetAnimLength(AnimInfo anim, float length);
+    void PlayAnim(AnimInfo anim, float normalizedTime, float durationTime);
 }

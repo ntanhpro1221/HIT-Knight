@@ -13,7 +13,10 @@ using UnityEngine.UIElements;
 /// <typeparam name="TKey">Enum type of key</typeparam>
 /// <typeparam name="TValue">Data type of each element</typeparam>
 [Serializable]
-public class PropertySet<TKey, TValue> : Dictionary<string, TValue>, ISerializationCallbackReceiver where TKey : Enum {
+public class PropertySet<TKey, TValue> : 
+    Dictionary<string, TValue>, ISerializationCallbackReceiver 
+    where TKey : Enum 
+    where TValue : new() {
     /// <summary>
     /// to get enum type
     /// </summary>
@@ -24,9 +27,13 @@ public class PropertySet<TKey, TValue> : Dictionary<string, TValue>, ISerializat
     [SerializeField] private string[] m_Keys;
     [SerializeField] private TValue[] m_Values;
     
+    public new string[] Keys => m_Keys;
+    public new TValue[] Values => m_Values;
+
     private void InitEnumField() {
         m_Keys = Enum.GetNames(typeof(TKey));
         m_Values = new TValue[Enum.GetNames(typeof(TKey)).Length];
+        for (int i = 0; i < m_Values.Length; i++) m_Values[i] = new();
     }
 
     public PropertySet() : base() => InitEnumField();
@@ -41,7 +48,7 @@ public class PropertySet<TKey, TValue> : Dictionary<string, TValue>, ISerializat
     public void OnBeforeSerialize() {
         if (m_Keys.Length == 0) InitEnumField();
         foreach (TKey key in Enum.GetValues(typeof(TKey))) 
-            if (Keys.Contains(key.ToString())) 
+            if (base.Keys.Contains(key.ToString())) 
                 this[key] = base[key.ToString()];
     }
 
@@ -52,10 +59,10 @@ public class PropertySet<TKey, TValue> : Dictionary<string, TValue>, ISerializat
             base.Add(key.ToString(), this[key]);
     }
     
-    public new TValue this[string key] {
-        get => throw new Exception("Dont use this function!!!");
-        set => throw new Exception("Dont use this function!!!");
-    }
+    //public new TValue this[string key] {
+    //    get => throw new Exception("Dont use this function!!!");
+    //    set => throw new Exception("Dont use this function!!!");
+    //}
     public new void Add(string key, TValue value) 
         => throw new Exception("Dont use this function!!!");
     public new bool TryAdd(string key, TValue value) 
@@ -73,7 +80,7 @@ public class PropertySet<TKey, TValue> : Dictionary<string, TValue>, ISerializat
 /// Enable edit PropertySet in Inspector
 /// </summary>
 [CustomPropertyDrawer(typeof(PropertySet<,>), true)]
-public class StatsDrawer : PropertyDrawer {
+public class PropertySetDrawer : PropertyDrawer {
     private SerializedProperty m_KeyType;
     private SerializedProperty m_Keys;
     private SerializedProperty m_Values;

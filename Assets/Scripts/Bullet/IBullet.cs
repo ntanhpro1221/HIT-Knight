@@ -3,7 +3,6 @@
 /// <summary>
 /// Bullet object.
 /// </summary>
-[RequireComponent(typeof(Collider2D))]
 [RequireComponent((typeof(Rigidbody2D)))]
 public abstract class IBullet : MonoBehaviour {
     protected Rigidbody2D m_Rb;
@@ -13,10 +12,11 @@ public abstract class IBullet : MonoBehaviour {
     /// Manage body
     /// </summary>
     public BulletBodyHandler BodyHandler { get; set; }
-    private void Awake() {
+    protected virtual void Awake() {
         m_Rb = GetComponent<Rigidbody2D>();
         
         m_Core = GetComponentInChildren<Core>();
+
         BodyHandler = m_Core.GetCoreComponent<BulletBodyHandler>();
     }
     /// <summary>
@@ -33,4 +33,5 @@ public abstract class IBullet : MonoBehaviour {
 
         BodyHandler.PlayAnim(BulletBodyHandler.Move);
     }
+    protected virtual void OnTriggerEnter2D(Collider2D other) { }
 }

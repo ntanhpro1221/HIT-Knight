@@ -1,0 +1,2 @@
+public class BaseRangedWeapon : IRangedWeapon {
+}

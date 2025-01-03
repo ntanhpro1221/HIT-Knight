@@ -4,7 +4,16 @@
 /// Manage actor movement through rigidbody
 /// </summary>
 public interface IMoveHandler {
-    void Init(Rigidbody2D rb, BindableProperty<float> moveSpeed);
+    float MaxCooldownTime { get; }
+    float CurCooldownTime { get; }
+    /// <summary>
+    /// just about cooldown
+    /// </summary>
+    bool IsReadyToDash { get; }
+    /// <summary>
+    /// Current move state
+    /// </summary>
+    MoveHandler.MoveState CurState { get; }
     /// <summary>
     /// Current velocity
     /// </summary>
