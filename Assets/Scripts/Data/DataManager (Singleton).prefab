@@ -1,0 +1,175 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8773512847496593400
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6859446661961242747}
+  - component: {fileID: 2197176529612222369}
+  m_Layer: 0
+  m_Name: DataManager (Singleton)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6859446661961242747
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8773512847496593400}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.17070709, y: 0.11197944, z: 0.070588164}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2197176529612222369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8773512847496593400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad12498f87b858e448368fbc5929cea3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SpriteData:
+    HeroIllus:
+      _serializedList:
+      - Key: 001
+        Value: {fileID: -84928365, guid: e6c734346eb38ed47ad963573012e95c, type: 3}
+    MonsterIllus:
+      _serializedList:
+      - Key: 001
+        Value: {fileID: 21300000, guid: 3b3dcb10a215b1e429d5ff24fea9b39f, type: 3}
+    WeaponIllus:
+      _serializedList:
+      - Key: 001
+        Value: {fileID: 21300000, guid: 0ba8a5a28874aaf4c8465af909d6e6ff, type: 3}
+    RuneIllus:
+      _serializedList:
+      - Key: 001
+        Value: {fileID: 21300000, guid: ea6a83c0171fdad4f9575c674dcfd4bc, type: 3}
+  m_UserData:
+    id: hihi
+    name: Admin
+    gold: 99
+    heroData:
+      _serializedList:
+      - Key: 001
+        Value:
+          id: 001
+          isOwned: 1
+          listRuneId:
+          - 001
+    weaponData:
+      _serializedList:
+      - Key: 001
+        Value:
+          id: 001
+          isOwned: 1
+          listRuneId:
+          - 001
+    actorRuneData:
+    - id: 001
+      isEquipped: 1
+      ownerId: 001
+    weaponRuneData:
+    - id: 001
+      isEquipped: 1
+      ownerId: 001
+  m_SystemData:
+    <heroData>k__BackingField:
+      _serializedList:
+      - Key: 001
+        Value:
+          <id>k__BackingField: 001
+          <name>k__BackingField: Alice
+          <stats>k__BackingField:
+            m_KeyType: 0
+            m_Keys:
+            - HP
+            - MP
+            - Armor
+            - MoveSpeed
+            m_Values:
+            - 2
+            - 2
+            - 2
+            - 5
+          <cost>k__BackingField: 12
+    <enemyData>k__BackingField:
+      _serializedList:
+      - Key: 001
+        Value:
+          <id>k__BackingField: 001
+          <name>k__BackingField: Satan
+          <stats>k__BackingField:
+            m_KeyType: 0
+            m_Keys:
+            - HP
+            - MP
+            - Armor
+            - MoveSpeed
+            m_Values:
+            - 3
+            - 3
+            - 3
+            - 1.5
+    <actorRuneData>k__BackingField:
+      _serializedList:
+      - Key: 001
+        Value:
+          <id>k__BackingField: 001
+          <name>k__BackingField: HP Rune
+          <listBuff>k__BackingField:
+          - <isForever>k__BackingField: 1
+            <existTime>k__BackingField: 0
+            <value>k__BackingField: 1
+            <buffType>k__BackingField: 0
+            <statType>k__BackingField: 0
+          <cost>k__BackingField: 12
+    <weaponRuneData>k__BackingField:
+      _serializedList:
+      - Key: 001
+        Value:
+          <id>k__BackingField: 001
+          <name>k__BackingField: Atk Rune
+          <listBuff>k__BackingField:
+          - <isForever>k__BackingField: 1
+            <existTime>k__BackingField: 0
+            <value>k__BackingField: 2
+            <buffType>k__BackingField: 0
+            <statType>k__BackingField: 1
+          <cost>k__BackingField: 12
+    <weaponData>k__BackingField:
+      _serializedList:
+      - Key: 001
+        Value:
+          <id>k__BackingField: 001
+          <name>k__BackingField: AK 48
+          <stats>k__BackingField:
+            m_KeyType: 0
+            m_Keys:
+            - Speed
+            - Atk
+            - Crit
+            - MPCost
+            - BulletSpeed
+            m_Values:
+            - 1.5
+            - 1
+            - 1
+            - 1
+            - 10

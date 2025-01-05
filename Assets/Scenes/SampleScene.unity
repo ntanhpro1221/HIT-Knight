@@ -240,162 +240,6 @@ Transform:
   - {fileID: 2036442078}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &444501878
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 444501880}
-  - component: {fileID: 444501879}
-  m_Layer: 0
-  m_Name: DataManager (Singleton)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &444501879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 444501878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad12498f87b858e448368fbc5929cea3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UserData:
-    id: hihi
-    name: Admin
-    gold: 99
-    heroData:
-      _serializedList:
-      - Key: 001
-        Value:
-          id: 001
-          isOwned: 1
-          listRuneId:
-          - 001
-    weaponData:
-      _serializedList:
-      - Key: 001
-        Value:
-          id: 001
-          isOwned: 1
-          listRuneId:
-          - 001
-    actorRuneData:
-    - id: 001
-      isEquipped: 1
-      ownerId: 001
-    weaponRuneData:
-    - id: 001
-      isEquipped: 1
-      ownerId: 001
-  m_SystemData:
-    <heroData>k__BackingField:
-      _serializedList:
-      - Key: 001
-        Value:
-          <id>k__BackingField: 001
-          <name>k__BackingField: Alice
-          <stats>k__BackingField:
-            m_KeyType: 0
-            m_Keys:
-            - HP
-            - MP
-            - Armor
-            - MoveSpeed
-            m_Values:
-            - 2
-            - 2
-            - 2
-            - 5
-          <cost>k__BackingField: 12
-    <enemyData>k__BackingField:
-      _serializedList:
-      - Key: 001
-        Value:
-          <id>k__BackingField: 001
-          <name>k__BackingField: Satan
-          <stats>k__BackingField:
-            m_KeyType: 0
-            m_Keys:
-            - HP
-            - MP
-            - Armor
-            - MoveSpeed
-            m_Values:
-            - 3
-            - 3
-            - 3
-            - 1.5
-    <actorRuneData>k__BackingField:
-      _serializedList:
-      - Key: 001
-        Value:
-          <id>k__BackingField: 001
-          <name>k__BackingField: HP Rune
-          <listBuff>k__BackingField:
-          - <isForever>k__BackingField: 1
-            <existTime>k__BackingField: 0
-            <value>k__BackingField: 1
-            <buffType>k__BackingField: 0
-            <statType>k__BackingField: 0
-          <cost>k__BackingField: 12
-    <weaponRuneData>k__BackingField:
-      _serializedList:
-      - Key: 001
-        Value:
-          <id>k__BackingField: 001
-          <name>k__BackingField: Atk Rune
-          <listBuff>k__BackingField:
-          - <isForever>k__BackingField: 1
-            <existTime>k__BackingField: 0
-            <value>k__BackingField: 2
-            <buffType>k__BackingField: 0
-            <statType>k__BackingField: 1
-          <cost>k__BackingField: 12
-    <weaponData>k__BackingField:
-      _serializedList:
-      - Key: 001
-        Value:
-          <id>k__BackingField: 001
-          <name>k__BackingField: AK 48
-          <stats>k__BackingField:
-            m_KeyType: 0
-            m_Keys:
-            - Speed
-            - Atk
-            - Crit
-            - MPCost
-            - BulletSpeed
-            m_Values:
-            - 1.5
-            - 1
-            - 1
-            - 1
-            - 10
---- !u!4 &444501880
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 444501878}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.17070709, y: 0.11197944, z: 0.070588164}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &609271670
 GameObject:
   m_ObjectHideFlags: 0
@@ -625,6 +469,63 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1001 &679683346
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6859446661961242747, guid: b387ac785800e63409a75364253e14cf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.17070709
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859446661961242747, guid: b387ac785800e63409a75364253e14cf, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.11197944
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859446661961242747, guid: b387ac785800e63409a75364253e14cf, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.070588164
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859446661961242747, guid: b387ac785800e63409a75364253e14cf, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859446661961242747, guid: b387ac785800e63409a75364253e14cf, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859446661961242747, guid: b387ac785800e63409a75364253e14cf, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859446661961242747, guid: b387ac785800e63409a75364253e14cf, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859446661961242747, guid: b387ac785800e63409a75364253e14cf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859446661961242747, guid: b387ac785800e63409a75364253e14cf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859446661961242747, guid: b387ac785800e63409a75364253e14cf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8773512847496593400, guid: b387ac785800e63409a75364253e14cf, type: 3}
+      propertyPath: m_Name
+      value: DataManager (Singleton)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b387ac785800e63409a75364253e14cf, type: 3}
 --- !u!224 &765910904 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5890308894719637095, guid: 2ee60d652fb47b24e93bce7b6d02332a, type: 3}
@@ -19800,7 +19701,7 @@ SceneRoots:
   - {fileID: 637930304}
   - {fileID: 231715029}
   - {fileID: 1339808132}
-  - {fileID: 444501880}
+  - {fileID: 679683346}
   - {fileID: 609271674}
   - {fileID: 988903640}
   - {fileID: 1749261654}

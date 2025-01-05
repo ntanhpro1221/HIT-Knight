@@ -68,12 +68,14 @@ public class DataManager : Singleton<DataManager>, IDataManager {
         _ = LoadSystemDataAsync();
     }
 
+    [SerializeField] private SpriteData m_SpriteData;
+    public SpriteData SpriteData => m_SpriteData;
     [SerializeField] private UserData m_UserData;
     public UserData UserData => m_UserData;
     [SerializeField] private SystemData m_SystemData;
     public SystemData SystemData => m_SystemData;
 
-    public async Task LoadUserDataAsync() => 
+    public async Task LoadUserDataAsync() =>
         m_UserData = await LoadObjectAsync<UserData>(UserDataRef);
     public async Task SaveUserDataAsync() =>
         await SaveObjectAsync(UserDataRef, m_UserData);
@@ -81,72 +83,79 @@ public class DataManager : Singleton<DataManager>, IDataManager {
         m_SystemData = await LoadObjectAsync<SystemData>(SystemDataRef);
     public async Task SaveSystemDataAsync() =>
         await SaveObjectAsync(SystemDataRef, m_SystemData);
-}
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(DataManager))]
-public class DataManagerEditor : Editor {
-    private class EditorButton {
-        public string name;
-        public Action onClick;
-        public EditorButton(string name, Action onClick) {
-            this.name = name;
-            this.onClick = onClick;
+    [CustomEditor(typeof(DataManager))]
+    public class DataManagerEditor : Editor {
+
+        private DataManager m_Target;
+        private SerializedProperty m_SpriteData;
+        private SerializedProperty m_UserData;
+        private SerializedProperty m_SystemData;
+        
+        private void OnEnable() {
+            m_Target = (DataManager)target;
+            m_SpriteData = serializedObject.FindProperty(nameof(DataManager.m_SpriteData));
+            m_UserData = serializedObject.FindProperty(nameof(DataManager.m_UserData));
+            m_SystemData = serializedObject.FindProperty(nameof(DataManager.m_SystemData));
         }
-        public void Display() {
-            if (GUILayout.Button(name)) 
-                onClick.Invoke();
+        
+        public override void OnInspectorGUI() {
+            serializedObject.Update();
+            EditorGUI.BeginChangeCheck();
+
+            RenderDataField(
+                m_SpriteData);
+            RenderDataField(
+                m_UserData,
+                new("Load", () => _ = m_Target.LoadUserDataAsync()),
+                new("Save", () => _ = m_Target.SaveUserDataAsync()));
+            RenderDataField(
+                m_SystemData,
+                new("Load", () => _ = m_Target.LoadSystemDataAsync()),
+                new("Save", () => _ = m_Target.SaveSystemDataAsync()));
+
+            EditorGUI.EndChangeCheck();
+            serializedObject.ApplyModifiedProperties();
+        }
+
+        private void RenderDataField(SerializedProperty data, params EditorButton[] buttons) {
+            // Label
+            EditorGUILayout.BeginHorizontal();
+            bool fold = EditorGUILayout.PropertyField(data, false);
+            foreach (var button in buttons) button.Display();
+            EditorGUILayout.EndHorizontal();
+
+            // Child element
+            EditorGUI.indentLevel++;
+            if (fold) foreach (var ite in GetDirectChilds(data))
+                    EditorGUILayout.PropertyField(ite);
+            EditorGUI.indentLevel--;
+        }
+
+        private IEnumerable<SerializedProperty> GetDirectChilds(SerializedProperty prop) {
+            if (!prop.hasVisibleChildren) yield break;
+            var ite = prop.Copy(); ite.NextVisible(true);
+            var end = prop.GetEndProperty();
+            do {
+                EditorGUILayout.PropertyField(ite);
+                ite.NextVisible(false);
+            } while (!SerializedProperty.EqualContents(ite, end));
+        }
+
+        private class EditorButton {
+            public string name;
+            public Action onClick;
+            public EditorButton(string name, Action onClick) {
+                this.name = name;
+                this.onClick = onClick;
+            }
+            public void Display() {
+                if (GUILayout.Button(name))
+                    onClick.Invoke();
+            }
         }
     }
-
-    private DataManager m_Target;
-    private SerializedProperty m_UserData;
-    private SerializedProperty m_SystemData;
-    private void OnEnable() {
-        m_Target = (DataManager)target;
-        m_UserData = serializedObject.FindProperty(nameof(m_UserData));
-        m_SystemData = serializedObject.FindProperty(nameof(m_SystemData));
-    }
-    public override void OnInspectorGUI() {
-        serializedObject.Update();
-        EditorGUI.BeginChangeCheck();
-
-        RenderDataField(
-            m_UserData,
-            new("Load", () => _ = m_Target.LoadUserDataAsync()),
-            new("Save", () => _ = m_Target.SaveUserDataAsync()));
-        RenderDataField(
-            m_SystemData,
-            new("Load", () => _ = m_Target.LoadSystemDataAsync()),
-            new("Save", () => _ = m_Target.SaveSystemDataAsync()));
-
-        EditorGUI.EndChangeCheck();
-        serializedObject.ApplyModifiedProperties();
-    }
-    
-    private void RenderDataField(SerializedProperty data, EditorButton loadBtn, EditorButton saveBtn) { 
-        // Label
-        EditorGUILayout.BeginHorizontal();
-        bool fold = EditorGUILayout.PropertyField(data, false);
-        loadBtn?.Display();
-        saveBtn?.Display();
-        EditorGUILayout.EndHorizontal();
-
-        // Child element
-        EditorGUI.indentLevel++;
-        if (fold) foreach(var ite in GetDirectChilds(data)) 
-            EditorGUILayout.PropertyField(ite);
-        EditorGUI.indentLevel--;
-    }
-
-    private IEnumerable<SerializedProperty> GetDirectChilds(SerializedProperty prop) {
-        if (!prop.hasVisibleChildren) yield break;
-        var ite = prop.Copy(); ite.NextVisible(true);
-        var end = prop.GetEndProperty();
-        do {
-            EditorGUILayout.PropertyField(ite);
-            ite.NextVisible(false);
-        } while (!SerializedProperty.EqualContents(ite, end));
-    }
-}
 #endif
+}
+
