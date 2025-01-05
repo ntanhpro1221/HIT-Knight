@@ -1,6 +1,8 @@
 using UnityEngine;
 
 public static class Util {
+    public const float MIN_LAYER_DIFF = 1e-6f;
+
     public static string GetHierarchyPath(GameObject obj) {
         try {
             string path = obj.name;

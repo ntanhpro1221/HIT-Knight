@@ -83,7 +83,7 @@ public class WeaponHandler : WeaponCommander, IWeaponHandler
         ListWeapon.Add(weapon);
         CurWeapon = weapon;
         weapon.transform.SetParent(transform);
-        weapon.transform.localPosition = new Vector3(0, 0.5f, -0.001f);
+        weapon.transform.localPosition = new Vector3(0, 0.5f, -Util.MIN_LAYER_DIFF);
     }
     
     public void RemoveCurrentWeapon() {

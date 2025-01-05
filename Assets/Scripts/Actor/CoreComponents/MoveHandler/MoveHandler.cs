@@ -1,24 +1,34 @@
 ﻿using System;
 
 using UnityEngine;
+using UnityEngine.AI;
 
 /// <summary>
 /// Manage actor movement through rigidbody
 /// </summary>
 public abstract class MoveHandler : CoreComponent, IMoveHandler {
     protected abstract Rigidbody2D RB { get; }
+
+    protected abstract NavMeshAgent Agent { get; }
+
     protected abstract BindableProperty<float> MoveSpeed { get; }
 
-    public float MaxCooldownTime => m_StateData_Dash.dashCoolDownTime;
-    public float CurCooldownTime => m_StateData_Dash.curDashCooldownTime;
-    public bool IsReadyToDash => m_StateData_Dash.curDashCooldownTime <= 0;
-    [field: SerializeField]
-    public MoveState CurState { get; private set; } = MoveState.Nope;
-    private StateData_MoveByPos m_StateData_MoveByPos;
+    public float MaxCooldownTime 
+        => m_StateData_Dash.Cooldown;
+
+    public float CurCooldownTime 
+        => m_StateData_Dash.curCooldown;
+
+    public bool IsReadyToDash 
+        => m_StateData_Dash.curCooldown <= 0;
+
+    [field: SerializeField] public MoveState CurState 
+        { get; private set; } = MoveState.Nope;
+
     [SerializeField] private StateData_Dash m_StateData_Dash = new() { 
-        dashSpeed = 20, 
-        dashDuration = 0.15f,
-        dashCoolDownTime = 5,
+        Speed = 20, 
+        Distance = 2.5f,
+        Cooldown = 5,
     };
 
     public enum MoveState {
@@ -27,41 +37,34 @@ public abstract class MoveHandler : CoreComponent, IMoveHandler {
         MoveByPos,
         Dash,
     }
-    private struct StateData_MoveByPos {
-        public Vector2 des;
-    }
+
     [Serializable] private struct StateData_Dash {
-        public float dashSpeed;
-        public float dashDuration;
-        public float dashCoolDownTime;
-        [HideInInspector] public float curDashDuration;
-        [HideInInspector] public float curDashCooldownTime;
+        public float Speed;
+        public float Distance;
+        public float Cooldown;
+        [HideInInspector] public float curCooldown;
     }
 
-    private void UpdateState_Nope() { }
-    private void UpdateState_MoveByDir() { }
+    private void UpdateState_Nope() 
+        { }
+
+    private void UpdateState_MoveByDir() {
+        if (RB.velocity.magnitude != 0)
+            RB.velocity *= MoveSpeed.Value / RB.velocity.magnitude;
+    }
+
     private void UdpateState_MoveByPos() {
-        float disToDes = Vector2.Distance(RB.position, m_StateData_MoveByPos.des);
-        if (disToDes <= float.Epsilon) {
-            StopMove();
-            return;
-        }
-        if (disToDes <= MoveSpeed.Value * Time.fixedDeltaTime) {
-            RB.velocity = Vector2.zero;
-            RB.MovePosition(m_StateData_MoveByPos.des);
-            return;
-        }
+        if (Agent.hasPath == false) StopMove();
+        Agent.speed = MoveSpeed.Value;
     }
+
     private void UpdateState_Dash() {
-        m_StateData_Dash.curDashDuration -= Time.fixedDeltaTime;
-        if (m_StateData_Dash.curDashDuration < 0) {
-            StopMove();
-            return;
-        }
+        if (Agent.hasPath == false) StopMove();
     }
+
     private void FixedUpdate() {
-        m_StateData_Dash.curDashCooldownTime = Math.Max(-1, 
-            m_StateData_Dash.curDashCooldownTime - Time.fixedDeltaTime);
+        m_StateData_Dash.curCooldown = Math.Max(-1, 
+            m_StateData_Dash.curCooldown - Time.fixedDeltaTime);
 
         switch (CurState) {
             case MoveState.Nope: UpdateState_Nope(); break;
@@ -76,24 +79,34 @@ public abstract class MoveHandler : CoreComponent, IMoveHandler {
         }
     }
 
-    public Vector2 Velocity => RB.velocity;
+    public Vector2 Velocity 
+        => RB.velocity != Vector2.zero 
+        ? RB.velocity 
+        : Agent.velocity;
+
     public virtual void MoveByDir(Vector2 dir) {
         CurState = MoveState.MoveByDir;
         RB.velocity = dir.normalized * MoveSpeed.Value;
     }
+
     public void MoveByPos(Vector2 pos) {
         CurState = MoveState.MoveByPos;
-        m_StateData_MoveByPos.des = pos;
-        RB.velocity = (pos - RB.position).normalized * MoveSpeed.Value;
+        Agent.speed = MoveSpeed.Value;
+        Agent.SetDestination(pos);
     }
+
     public void Dash(Vector2 dir) {
         CurState = MoveState.Dash;
-        m_StateData_Dash.curDashDuration = m_StateData_Dash.dashDuration;
-        m_StateData_Dash.curDashCooldownTime = m_StateData_Dash.dashCoolDownTime;
-        RB.velocity = dir.normalized * m_StateData_Dash.dashSpeed;
+        m_StateData_Dash.curCooldown = m_StateData_Dash.Cooldown;
+        Agent.speed = m_StateData_Dash.Speed;
+        Agent.SetDestination(
+            (Vector2)Agent.transform.position +
+            dir.normalized * m_StateData_Dash.Distance);
     }
+
     public void StopMove() {
         CurState = MoveState.Nope;
         RB.velocity = Vector2.zero;
+        Agent.ResetPath();
     }
 }

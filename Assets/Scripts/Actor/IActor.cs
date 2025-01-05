@@ -1,11 +1,14 @@
 ﻿using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 /// <summary>
 /// Base of actor
 /// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(Coord3DSimilator))]    
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(SortingGroup))]
 public abstract class IActor : MonoBehaviour {
     #region CONFIG
     [field: SerializeField] public string ActorId { get; private set; } = "001";
@@ -62,8 +65,16 @@ public abstract class IActor : MonoBehaviour {
 
     public Rigidbody2D RB 
         => GetComponent<Rigidbody2D>();
+
+    public NavMeshAgent Agent
+        => GetComponent<NavMeshAgent>();
     #endregion
     
-    protected virtual void Awake() { }
+    protected virtual void Awake() {
+        Agent.updateRotation = false;
+        Agent.updateUpAxis = false;
+        Agent.acceleration = 1e9f;
+        Agent.autoBraking = false;
+    }
 }
 

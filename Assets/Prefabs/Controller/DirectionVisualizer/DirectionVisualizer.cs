@@ -27,7 +27,7 @@ public class DirectionVisualizer : MonoBehaviour {
 
     public void Init(Transform root, Discard discard) {
         transform.SetParent(root);
-        transform.localPosition = new Vector3(0, 0, 0.1f);
+        transform.localPosition = new Vector3(0, 0, Util.MIN_LAYER_DIFF);
         m_Discard = discard;
     }
     
