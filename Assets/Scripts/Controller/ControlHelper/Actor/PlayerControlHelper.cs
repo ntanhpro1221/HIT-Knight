@@ -12,7 +12,7 @@ public class PlayerControlHelper : IActorControlHelper {
         => input.Value.InBattle;
 
     private void Awake() {
-        controller = TmpGameManager.Instance.controller;
+        controller = PlayerControllerInBattle.Instance;
         InBattle.Dash.canceled += obj => {
             if (controller.IsDiscard == false)
                 Dash = controller.CurDir;

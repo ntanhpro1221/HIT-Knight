@@ -68,6 +68,8 @@ public class DataManager : Singleton<DataManager>, IDataManager {
         _ = LoadSystemDataAsync();
     }
 
+    [SerializeField] private LevelDataSO m_LevelData;
+    public LevelDataSO LevelData => m_LevelData;
     [SerializeField] private SpriteData m_SpriteData;
     public SpriteData SpriteData => m_SpriteData;
     [SerializeField] private UserData m_UserData;
@@ -89,12 +91,14 @@ public class DataManager : Singleton<DataManager>, IDataManager {
     public class DataManagerEditor : Editor {
 
         private DataManager m_Target;
+        private SerializedProperty m_LevelData;
         private SerializedProperty m_SpriteData;
         private SerializedProperty m_UserData;
         private SerializedProperty m_SystemData;
         
         private void OnEnable() {
             m_Target = (DataManager)target;
+            m_LevelData = serializedObject.FindProperty(nameof(DataManager.m_LevelData));
             m_SpriteData = serializedObject.FindProperty(nameof(DataManager.m_SpriteData));
             m_UserData = serializedObject.FindProperty(nameof(DataManager.m_UserData));
             m_SystemData = serializedObject.FindProperty(nameof(DataManager.m_SystemData));
@@ -104,6 +108,7 @@ public class DataManager : Singleton<DataManager>, IDataManager {
             serializedObject.Update();
             EditorGUI.BeginChangeCheck();
 
+            EditorGUILayout.PropertyField(m_LevelData);
             RenderDataField(
                 m_SpriteData);
             RenderDataField(

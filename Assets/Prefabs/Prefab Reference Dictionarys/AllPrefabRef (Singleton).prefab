@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &783365659793519618
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3186527317800007270}
+  - component: {fileID: 2213010551196339695}
+  m_Layer: 0
+  m_Name: AllPrefabRef (Singleton)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3186527317800007270
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783365659793519618}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2213010551196339695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783365659793519618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 496aaf318cabe43439996b3655e9b210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Hero>k__BackingField: {fileID: 11400000, guid: 3c9765a8c9b464944bf87dc8e4caafb4, type: 2}
+  <Monster>k__BackingField: {fileID: 11400000, guid: b196dae3b5630d241a591a999a5966bd, type: 2}
+  <Weapon>k__BackingField: {fileID: 11400000, guid: 79bbf161d114cac49bb94e224a823c18, type: 2}
+  <Bullet>k__BackingField: {fileID: 11400000, guid: 15ec0b9f2e7ed4e458b994fd02be8324, type: 2}
+  <Environment>k__BackingField: {fileID: 11400000, guid: bf327ef50de0f244c879de9f74f6f7f6, type: 2}

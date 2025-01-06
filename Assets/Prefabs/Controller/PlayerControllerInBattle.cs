@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
 
-public class PlayerControllerInBattle : MonoBehaviour {
+public class PlayerControllerInBattle : Singleton<PlayerControllerInBattle> {
     private PlayerInput m_Input;
 
     private IActor m_Player;
@@ -14,7 +14,9 @@ public class PlayerControllerInBattle : MonoBehaviour {
     private Dash_CooldownUIHandler m_DashCooldownUI;
     private Attack_CooldownUIHandler m_AttackCooldownUI;
 
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
+
         m_Input ??= new();        
         m_DiscardBtn = GetComponentInChildren<Discard>();
         m_DashCooldownUI = GetComponentInChildren<Dash_CooldownUIHandler>();
